@@ -1,0 +1,7 @@
+.div-hover:hover > div,
+.div-hover:hover > i,
+.div-hover:hover > p {
+    /* Seus estilos de hover aqui */
+    background-color: white;
+    color: #0086FF;
+}
