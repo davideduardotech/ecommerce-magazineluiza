@@ -193,7 +193,7 @@ app.get('/',auth,(req: RequestInterface, res) => {
     }
   }
   
-  res.render('homepage', { website,user:req.user , title: 'Titulo: Express com TypeScript' , message: `Body: Express com Typescript`});
+  res.render('pages/home', { website,user:req.user , title: 'Titulo: Express com TypeScript' , message: `Body: Express com Typescript`});
   
   
 });
