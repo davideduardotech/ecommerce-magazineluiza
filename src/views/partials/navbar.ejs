@@ -55,11 +55,16 @@
 
                             <!-- dropdown -->
                             <div id="menu-mobile-dropdown" class="hidden shadow-xl w-[300px] bg-white absolute left-0 top-[50px] flex flex-col">
-                                <%if(user){%>
+                                <%if(typeof user !== 'undefined'){%>
                                     <div class="py-[8px] flex flex-row justify-center">
                                         <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/0086FF/user-male-circle.png" alt="user-male-circle"/>
                                         <div class="text-[12px] flex flex-col justify-center ml-[8px]">
-                                            <p class="font-bold text-azul"><%= user.name %></p>
+                                            <% if(typeof user.isAdmin !== 'undefined' && user.isAdmin) {%>
+                                                <p class="font-bold text-azul"><%= user.name %> [ADMIN]</p>
+                                            <%} else {%>
+                                                <p class="font-bold text-azul"><%= user.name %></p>
+                                            <%}%>
+                                            
                                             <p class="text-black"><%= user.email %></p>
                                         </div>
                                     </div>
@@ -108,7 +113,7 @@
 
                     <!-- Entre ou Cadastre-se -->
                     <div class="max-[650px]:hidden">
-                        <% if(user) { %>
+                        <% if(typeof user !== 'undefined') { %>
                             <div id="profile-container" class="h-[75px] relative z-10 max-[650px]:pt-[8px]">
                                 <div id="profile-item" class="flex flex-row items-center shadow-lg cursor-pointer rounded-tl-[10px] rounded-tr-[10px] px-[8px]">
                                     <div class="w-[50px] h-[50px]  flex items-center justify-center rounded-full mr-[10px] shadow-md z-10 max-[650px]:w-[30px] max-[650px]:h-[30px]">
@@ -116,7 +121,13 @@
     
                                     </div>
                                     <div class="text-[12px] flex flex-col max-[870px]:hidden">
-                                        <p id="profile-item-name" class="font-bold"><%= user.name%></p>
+                                        
+                                            <% if(typeof user.isAdmin !== 'undefined' && user.isAdmin) {%>
+                                                <p id="profile-item-name" class="font-bold"><%= user.name%> [ADMIN]</p>        
+                                            <%} else {%>
+                                                <p id="profile-item-name" class="font-bold"><%= user.name%></p> 
+                                            <%}%>
+                                        
                                         <p class="text-[#CCE6F4]"><%= user.email%></p>
                                     </div>
                                 </div>
@@ -124,7 +135,12 @@
                                 <!-- Perfil DropDown -->
                                 <div id="profile-dropdown" class="hidden bg-white bottom-auto right-0 flex flex-col w-[300px] absolute">
                                     <div class="text-[12px] max-[870px]:flex hidden flex-col py-[8px] z-10 items-center">
-                                        <p id="profile-item-name" class="font-bold text-azul"><%= user.name%></p>
+                                        <% if(typeof user.isAdmin !== 'undefined' && user.isAdmin) {%>
+                                            <p id="profile-item-name" class="font-bold text-azul"><%= user.name%> [ADMIN]</p>
+                                        <%} else{%>
+                                            <p id="profile-item-name" class="font-bold text-azul"><%= user.name%></p>
+                                        <%}%>
+                                        
                                         <p class="text-black"><%= user.email%></p>
                                     </div>
     
@@ -142,7 +158,7 @@
                         <%} else {%>
                             <div class=" h-[75px] flex flex-col pt-[8px] text-[12px]">
                                 <span class="font-bold">Bem-vindo :)</span>
-                                <a href="/login" class="hover:underline">Entre ou Cadastre-se</a>
+                                <a href="/login?redirect=/produto/65ad45c5149f28660e04d795" class="hover:underline">Entre ou Cadastre-se</a>
                                 
                             </div>
                         <%}%>
@@ -201,69 +217,71 @@
             <div class="h-[45px] mt-[32px]">
                 <div class="flex flex-row justify-between z-10">
 
-                    <% for(const [index,item] of website.navbar.desktop.menu["mouse over with expanding"].entries()) {%> 
-                        <!-- Menu Container -->
-                        <div class="menu-container h-[45px] relative <%= (index === website.navbar.desktop.menu["mouse over with expanding"].length - 1 || index === website.navbar.desktop.menu["mouse over with expanding"].length - 2) ? ' max-[700px]:hidden' : '' %>">
-                            <!-- Menu Item -->
-                            <div id="menu-item" class="px-[16px] h-[45px] text-[14px] rounded-tl-[10px] rounded-tr-[10px] space-x-2 flex items-center cursor-pointer">
-                                <%if("icon" in item) {%>
-                                    <i id="menu-item-icon" class="<%= item.icon.name %> <%= item.icon.size %>"></i>
-                                <%}%>
-                                <p id="menu-item-text"><%= item.label %></p>
-                            </div>
-
-                            <%if(index === website.navbar.desktop.menu["mouse over with expanding"].length - 1) {%>
-                                <!-- último item do array -->
-                                 <!-- Menu Link -->
-                                 <div id="menu-links" class="hidden bg-white shadow-lg absolute right-0 left-auto top-[45px] z-10 text-[14px] px-[16px] pt-[16px] flex flex-row pb-[20px] border-b-[5px] border-azul">
-                                    <%for(const column in item.expanded){%>
-                                        <div class="w-[200px] flex flex-col">
-                                            <%for(const itemColumn of item.expanded[column]){%>
-                                                <a href="<%= itemColumn.href %>" class="hover:underline text-black px-[4px] py-[8px]"><%= itemColumn.label %></a>    
-                                            <%}%>
-                                        </div>
+                    <% if( typeof menuExpanding !== 'undefined' ) {%>
+                        <% for(const [index,item] of menuExpanding.entries()) {%> 
+                            <!-- Menu Container -->
+                            <div class="menu-container h-[45px] relative <%= (index === menuExpanding.length - 1 || index === menuExpanding.length - 2) ? ' max-[700px]:hidden' : '' %>">
+                                <!-- Menu Item -->
+                                <div id="menu-item" class="px-[16px] h-[45px] text-[14px] rounded-tl-[10px] rounded-tr-[10px] space-x-2 flex items-center cursor-pointer">
+                                    <%if("icon" in item) {%>
+                                        <i id="menu-item-icon" class="<%= item.icon.name %> <%= item.icon.size %>"></i>
                                     <%}%>
+                                    <p id="menu-item-text"><%= item.label %></p>
                                 </div>
-                            <%} else if(index === website.navbar.desktop.menu["mouse over with expanding"].length - 2){ %>
-                                <!-- penultimo item do array -->
-                                 <!-- Menu Link -->
-                                 <div id="menu-links" class="hidden bg-white shadow-lg absolute right-0 left-auto top-[45px] z-10 text-[14px] px-[16px] pt-[16px] flex flex-row pb-[20px] border-b-[5px] border-azul">
-                                    <%for(const column in item.expanded){%>
-                                        <div class="w-[200px] flex flex-col">
-                                            <%for(const itemColumn of item.expanded[column]){%>
-                                                <a href="<%= itemColumn.href %>" class="hover:underline text-black px-[4px] py-[8px]"><%= itemColumn.label %></a>    
-                                            <%}%>
-                                        </div>
-                                    <%}%>
-                                </div>
-                            <%} else if(index === website.navbar.desktop.menu["mouse over with expanding"].length - 3){ %>
-                                <!-- penultimo item do array -->
+    
+                                <%if(index === menuExpanding.length - 1) {%>
+                                    <!-- último item do array -->
+                                     <!-- Menu Link -->
+                                     <div id="menu-links" class="hidden bg-white shadow-lg absolute right-0 left-auto top-[45px] z-10 text-[14px] px-[16px] pt-[16px] flex flex-row pb-[20px] border-b-[5px] border-azul">
+                                        <%for(const column in item.expanded){%>
+                                            <div class="w-[200px] flex flex-col">
+                                                <%for(const itemColumn of item.expanded[column]){%>
+                                                    <a href="<%= itemColumn.href %>" class="hover:underline text-black px-[4px] py-[8px]"><%= itemColumn.label %></a>    
+                                                <%}%>
+                                            </div>
+                                        <%}%>
+                                    </div>
+                                <%} else if(index === menuExpanding.length - 2){ %>
+                                    <!-- penultimo item do array -->
+                                     <!-- Menu Link -->
+                                     <div id="menu-links" class="hidden bg-white shadow-lg absolute right-0 left-auto top-[45px] z-10 text-[14px] px-[16px] pt-[16px] flex flex-row pb-[20px] border-b-[5px] border-azul">
+                                        <%for(const column in item.expanded){%>
+                                            <div class="w-[200px] flex flex-col">
+                                                <%for(const itemColumn of item.expanded[column]){%>
+                                                    <a href="<%= itemColumn.href %>" class="hover:underline text-black px-[4px] py-[8px]"><%= itemColumn.label %></a>    
+                                                <%}%>
+                                            </div>
+                                        <%}%>
+                                    </div>
+                                <%} else if(index === menuExpanding.length - 3){ %>
+                                    <!-- penultimo item do array -->
+                                        <!-- Menu Link -->
+                                        <div id="menu-links" class="hidden bg-white shadow-lg absolute right-0 left-auto top-[45px] z-10 text-[14px] px-[16px] pt-[16px] flex flex-row pb-[20px] border-b-[5px] border-azul">
+                                        <%for(const column in item.expanded){%>
+                                            <div class="w-[200px] flex flex-col">
+                                                <%for(const itemColumn of item.expanded[column]){%>
+                                                    <a href="<%= itemColumn.href %>" class="hover:underline text-black px-[4px] py-[8px]"><%= itemColumn.label %></a>    
+                                                <%}%>
+                                            </div>
+                                        <%}%>
+                                    </div>
+                                <%} else{%>
                                     <!-- Menu Link -->
-                                    <div id="menu-links" class="hidden bg-white shadow-lg absolute right-0 left-auto top-[45px] z-10 text-[14px] px-[16px] pt-[16px] flex flex-row pb-[20px] border-b-[5px] border-azul">
-                                    <%for(const column in item.expanded){%>
-                                        <div class="w-[200px] flex flex-col">
-                                            <%for(const itemColumn of item.expanded[column]){%>
-                                                <a href="<%= itemColumn.href %>" class="hover:underline text-black px-[4px] py-[8px]"><%= itemColumn.label %></a>    
-                                            <%}%>
-                                        </div>
-                                    <%}%>
-                                </div>
-                            <%} else{%>
-                                <!-- Menu Link -->
-                                <div id="menu-links" class="hidden bg-white shadow-lg absolute left-0 top-[45px] z-10 text-[14px] px-[16px] pt-[16px] flex flex-row pb-[20px] border-b-[5px] border-azul">
-                                    <%for(const column in item.expanded){%>
-                                        <div class="w-[200px] flex flex-col">
-                                            <%for(const itemColumn of item.expanded[column]){%>
-                                                <a href="<%= itemColumn.href %>" class="hover:underline text-black px-[4px] py-[8px]"><%= itemColumn.label %></a>    
-                                            <%}%>
-                                        </div>
-                                    <%}%>
-                                </div>
-                            <%}%>
-
-                            
-                        </div>
-                    <%}%>        
+                                    <div id="menu-links" class="hidden bg-white shadow-lg absolute left-0 top-[45px] z-10 text-[14px] px-[16px] pt-[16px] flex flex-row pb-[20px] border-b-[5px] border-azul">
+                                        <%for(const column in item.expanded){%>
+                                            <div class="w-[200px] flex flex-col">
+                                                <%for(const itemColumn of item.expanded[column]){%>
+                                                    <a href="<%= itemColumn.href %>" class="hover:underline text-black px-[4px] py-[8px]"><%= itemColumn.label %></a>    
+                                                <%}%>
+                                            </div>
+                                        <%}%>
+                                    </div>
+                                <%}%>
+    
+                                
+                            </div>
+                        <%}%>     
+                    <%}%>       
                 </div>
             </div>
         </div>

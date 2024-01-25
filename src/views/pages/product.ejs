@@ -1,0 +1,237 @@
+<html>
+    <head>
+        <title><%= produto.nome || 'Produto' %> </title>
+
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                
+              theme: {
+                extend: {
+                  colors: {
+                    azul: '#0086FF', // Background da navbar
+                  }
+                }
+              }
+            }
+          </script>
+
+    </head>
+    <body class="bg-[#F4F4F4] relative">
+        <!-- Model/Popup -->
+        <div class="absolute w-full h-full bg-black bg-opacity-30 z-10 flex flex-row justify-center items-center">
+            <div class="relative w-full max-w-[40%] max-sm:max-w-[80%] max-2xl:max-w-[60%] bg-white rounded-[10px] px-[16px] pt-[32px]">
+                <!-- botão de fechar -->
+                <div class="absolute rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.24)] h-[40px] w-[40px] bg-azul right-[15px] top-[15px] flex flex-row justify-center items-center cursor-pointer transition-transform duration-500 hover:scale-105">
+                    <i class="fa-solid fa-xmark text-white text-[20px]"></i>
+                </div>
+
+                <form method="post" action="/upload" enctype="multipart/form-data">
+                    <div id="file-input-container" class="bg-transparent rounded-[10px]">
+                        <label for="file-input" class="flex flex-col items-center justify-center px-[20px] h-[200px] cursor-pointer transition-transform duration-500 hover:scale-105">
+                            <i class="fa-solid fa-cloud-arrow-up text-azul text-[25px]"></i>
+                            <p class="mt-2 text-sm text-azul"><span class="font-semibold">Click para carregar imagem</span> ou arraste e solte</p>
+                            <p class="text-xs text-azul">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                            <input id="file-input" type="file" name="imagem" class="hidden" onchange="onChangeFileInput()">
+                        </label>
+                    </div>
+
+                    <!-- detalhes da imagem -->
+                    <div id="detalhes-da-imagem" class="hidden flex flex-row flex-wrap items-center justify-center space-x-[10px] w-100 h-[200px]">
+                        <div class="w-[40px] h-[40px] bg-azul rounded-[10px] flex flex-row items-center justify-center">
+                            <i class="fa-solid fa-file text-white text-[20px]"></i>
+                        </div>
+                        <div class="">
+                            <p id="detalhes-da-imagem-nome" class="font-semibold text-azul text-sm">imagem23746273424234827342.webp</p>
+                            <div class="flex flex-row justify-between">
+                                <p id="detalhes-da-imagem-extensao" class="text-sm text-azul">.PNG</p>
+                                <p id="detalhes-da-imagem-tamanho" class="text-sm text-azul">1.5MB</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- espaçamento -->
+                    <div id="detalhes-da-imagem-espacamento" class="hidden h-[20px]"></div>
+                   
+                    <!-- botões de cancelar e salvar -->
+                    <div id="detalhes-da-imagem-botoes" class="hidden flex flex-row space-x-[5px] justify-end ">
+                        <button id="detalhes-da-imagem-botao-de-cancelar" type="submit" class="bg-red-500 hover:bg-red-700 text-[14px] text-white font-semibold py-2 px-4 rounded cursor-pointer">Cancelar</button>
+                        <button id="detalhes-da-imagem-botao-de-enviar" type="submit" class="bg-blue-500 hover:bg-blue-700 text-[14px] text-white font-semibold py-2 px-4 rounded cursor-pointer">Enviar Imagem</button>
+                    </div>
+
+                    
+                </form>
+              
+
+            </div>
+        </div>
+
+        <!-- Barra de Navegação -->
+        <%- include('../partials/navbar.ejs') %>
+
+
+        
+        <!-- Produto -->
+        <div class="my-[44px] bg-white shadow-xl px-[16px] mx-[30px] rounded-[10px]">
+
+            <!-- Tittle and Arrow Back -->
+            <div class="flex flex-row items-center space-x-[20px] py-[20px] px-[4px]">
+                <div id="product-arrow-back" class="w-[50px] h-[50px]  flex flex-row items-center justify-center cursor-pointer">
+                    <i class="fa-solid fa-chevron-left text-azul text-[20px]"></i>
+                </div>
+                <div>
+                    <p class="text-[24px] text-[#404040] font-bold"><%= produto.nome %></p>
+                    <p class="text-[18px] text-[#999999]">código <%= produto._id %></p>
+                </div>
+
+            </div>
+
+            <div class="flex flex-row flex-wrap justify-center pb-[20px]">
+                <div class=" flex flex-row">
+                    <!-- 1° Container: Imagens na vertical -->
+                    <div class="flex flex-col space-y-[15px] ">
+                        <% if(typeof user !== 'undefined' && typeof user.isAdmin !== 'undefined' && user.isAdmin) {%>
+                            <div id="container-imagem-vertical-01" class="relative w-[110px] h-[110px] cursor-pointer border-[2px] border-azul rounded-[6px] flex flex-row justify-center items-center">
+                                <img class="w-[90px] h-[90px]" src="<%= produto.imagem[1] %>"></img>
+                                <div class="flex flex-col justify-center space-y-[5px] absolute z-10 bottom-[10px] left-[90px] ">
+                                    
+                                    <% if( produto.imagem[1]== '/img/default/product_default.png' ) {%>
+                                            <!-- adicionar imagem -->
+                                            <div class="flex flex-row items-center space-x-[5px] transition-transform duration-500 hover:scale-105">
+                                                <div class="flex flex-row items-center justify-center rounded-full min-w-[35px] h-[35px] bg-azul">
+                                                    <i class="fa-solid fa-plus text-white text-[14px]"></i>
+                                                </div>
+                                                <p class="text-azul text-[14px] whitespace-nowrap">Adicionar Imagem</p>
+                                            </div>
+                                    <%}else{%>
+                                            <!-- deletar imagem -->
+                                            <div class="flex flex-row items-center space-x-[5px] transition-transform duration-500 hover:scale-105">
+                                                <div class="flex flex-row justify-center items-center rounded-full min-w-[35px] h-[35px] bg-red-900 transition-transform duration-300 hover:scale-105">
+                                                    <i class="fa-solid fa-trash text-white text-[14px]"></i>
+                                                </div>
+                                                <p class="text-[14px] text-red-900 whitespace-nowrap">deletar imagem</p>
+                                            </div>
+
+                                            <!-- alterar imagem -->
+                                            <div class="flex flex-row items-center space-x-[5px] transition-transform duration-500 hover:scale-105">
+                                                <div class="flex flex-row items-center justify-center rounded-full min-w-[35px] h-[35px] bg-azul">
+                                                    <i class="fa-solid fa-image text-white text-[14px]"></i>
+                                                </div>
+                                                <p class="text-azul text-[14px] whitespace-nowrap">Alterar Imagem</p>
+                                            </div>
+                                    <%}%>
+                                    
+                                </div>
+                            </div>
+                            <div id="container-imagem-vertical-02" class="w-[110px] h-[110px] cursor-pointer border-[1px] border-[#e5e5e5] rounded-[6px] flex flex-row justify-center items-center">
+                                <img class="w-[90px] h-[90px]" src="<%= produto.imagem[2] %>"></img>
+                                <p class="cursor-pointer text-red text-[14px] underline">Editar</p>
+                            </div>
+                            <div id="container-imagem-vertical-03" class="w-[110px] h-[110px] cursor-pointer border-[1px] border-[#e5e5e5] rounded-[6px] flex flex-row justify-center items-center">
+                                <img class="w-[90px] h-[90px]" src="<%= produto.imagem[3] %>"></img>
+                                <p class="cursor-pointer text-red text-[14px] underline">Editar</p>
+                            </div>
+                            <div id="container-imagem-vertical-04" class="w-[110px] h-[110px] cursor-pointer border-[1px] border-[#e5e5e5] rounded-[6px] flex flex-row justify-center items-center">
+                                <img class="w-[90px] h-[90px]" src="<%= produto.imagem[4] %>"></img>
+                                <p class="cursor-pointer text-red text-[14px] underline">Editar</p>
+                            </div>
+                        <%} else {%>
+                            <div id="container-imagem-vertical-01" class="w-[110px] h-[110px] cursor-pointer border-[2px] border-azul rounded-[6px] flex flex-row justify-center items-center">
+                                <img class="w-[90px] h-[90px]" src="<%= produto.imagem[1] %>"></img>
+                            </div>
+                            <div id="container-imagem-vertical-02" class="w-[110px] h-[110px] cursor-pointer border-[1px] border-[#e5e5e5] rounded-[6px] flex flex-row justify-center items-center">
+                                <img class="w-[90px] h-[90px]" src="<%= produto.imagem[2] %>"></img>
+                            </div>
+                            <div id="container-imagem-vertical-03" class="w-[110px] h-[110px] cursor-pointer border-[1px] border-[#e5e5e5] rounded-[6px] flex flex-row justify-center items-center">
+                                <img class="w-[90px] h-[90px]" src="<%= produto.imagem[3] %>"></img>
+                            </div>
+                            <div id="container-imagem-vertical-04" class="w-[110px] h-[110px] cursor-pointer border-[1px] border-[#e5e5e5] rounded-[6px] flex flex-row justify-center items-center">
+                                <img class="w-[90px] h-[90px]" src="<%= produto.imagem[4] %>"></img>
+                            </div>
+                        <%}%>
+                        
+
+                    </div>
+
+                    <!-- 2° Container: Imagem selecionada -->
+                    <div id="container-imagem-selecionada" class="max-w-[500px] w-100 h-full flex flex-row justify-center items-center px-[10px] py-[10px]">
+                        <img class="w-full" src="<%= produto.imagem[1] %>"></img>
+                    </div>
+                </div>
+        
+
+                <!-- 3° Container: Detalhes do Produto -->
+                <div class="flex-grow">
+                    <!-- Avaliações, Botão de Compartilhar e favorio-->
+                    <div class="flex flex-row justify-between ">
+                        <div class="flex flex-row items-center">
+                            <i class="fa-solid fa-star text-[15px] text-[#FCD000]"></i>
+                            <i class="fa-solid fa-star text-[15px] text-[#FCD000]"></i>
+                            <i class="fa-solid fa-star text-[15px] text-[#FCD000]"></i>
+                            <i class="fa-solid fa-star text-[15px] text-[#FCD000]"></i>
+                            <i class="fa-solid fa-star text-[15px] text-[#FCD000]"></i>
+                            <a href="" class="ml-[10px] text-[14px] underline text-[#404040]">Avaliar Produto</a>
+                        </div>
+                        <div>
+                            <i class="fa-solid cursor-pointer fa-share-nodes text-[30px] text-azul transition duration-300 hover:scale-110"></i>
+                            <i class="ml-[5px] cursor-pointer fa-regular fa-heart text-[30px] text-azul transition duration-300 hover:scale-110"></i>
+                        </div>
+                    </div>
+
+                    <!-- detalhes de preço(R$) -->
+                    <div>
+                        <p class="text-[14px] text-[#999999] line-through">R$3.199,99</p>
+                        <div class="flex flex-row items-center">
+                            <p class="text-[24px] text-[#404040] font-bold">R$2.249,99</p>
+                            <p class="ml-[5px] text-[14px] text-[#404040]">no Pix</p>
+                        </div>
+                        <p class="text-[14px] text-[#59C00B]">(10% de desconto)</p>
+                        <p class="text-[14px] text-[#404040]">ou R$ 2.499,99 em 10x de R$ 250,00 sem juros</p>
+                        
+                        <!-- Espaçamento -->
+                        <div class="h-[10px]"></div>
+
+                        <a href="/">
+                            <div class="h-[50px] bg-[#59C00B] hover:bg-[#479908] px-[8px] flex flex-row items-center justify-between rounded-[4px]">
+                                <i class="fa-solid fa-cart-shopping text-white pl-[10px]"></i>
+                                <div class="w-full flex flex-row justify-center">
+                                    <p class="text-white text-[16px]">COMPRAR AGORA</p>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Espaçamento -->
+                        <div class="h-[5px]"></div>
+
+                        <a href="/">
+                            <div class="h-[50px] bg-[#59C00B] hover:bg-[#479908] px-[8px] flex flex-row items-center justify-between rounded-[4px]">
+                                <i class="fa-solid fa-bag-shopping text-white pl-[10px]"></i>
+                                <div class="w-full flex flex-row justify-center">
+                                    <p class="text-white text-[16px]">ADICIONAR A SACOLA</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+
+                </div>
+            </div>
+
+
+        </div>
+        
+        <!-- Javascript -->
+        <script src="../js/navbar/navbar.js"></script>
+        <script src="../js/product/script.js"></script>
+    </body>
+</html>

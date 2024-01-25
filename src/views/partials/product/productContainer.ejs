@@ -1,0 +1,79 @@
+<!-- Produtos -->
+<div class="flex flex-col my-[44px] bg-white shadow-xl px-[16px] py-[20px] mx-[30px] rounded-[10px]">
+    <div id="card-loading" class="flex justify-center">
+        <div class="border-gray-300 h-10 w-10 animate-spin rounded-full border-[2px] border-t-azul" >
+        </div>
+    </div>
+    <div id="card-content" class="hidden">
+        <div class="flex flex-row items-center space-x-[15px] border-l-[5px] ml-[50px] pl-[10px] border-azul">
+            <h1 class="text-azul text-[18px]">Produtos Mais Vendidos</h1>
+        </div>
+        <div id="product-card-container" class="flex flex-row">
+            <!-- Seta de Voltar -->
+            <div class="flex items-center relative min-w-[50px] max-[650px]:min-w-[30px]"> <!--shadow-[0_7px_29px_0_rgba(100,100,111,0.2)]-->
+                <div id="product-card-arrow-left" class="w-[64px] h-[64px] rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.24)] bg-white flex flex-row items-center justify-center cursor-pointer absolute">
+                    <i class="fa-solid fa-chevron-left text-[22px] text-azul"></i>
+                </div>
+            </div>
+
+            <!-- Cards de Produtos -->
+            <div class="overflow-hidden">
+                <div id="product-card-scrollbar" class="flex flex-row py-[20px] space-x-[20px] overflow-x-auto">
+                    <!-- espaçamento -->
+                    <div class="max-w-[50px]"></div>
+
+                    
+                        <!-- Produto 01 -->
+                        <a href="/">
+                            <div id="card-product-item" class="min-w-[300px] flex flex-col">
+                                <div id="card-product-image" class="w-full min-h-[200px] bg-yellow-900">
+            
+                                </div>
+                                <div class="flex flex-col py-[8px] px-[4px]">
+                                    <!-- Titulo -->
+                                    <p id="card-product-title" class="text-[16px] text-black">1. Smartphone Samsung Galaxy A14 128GB Preto 4G Octa-Core 4GB RAM 6,6" Câm. Tripla + Selfie 13MP Dual Chip</p>
+                                    <!-- Avaliações -->
+                                    <div class="flex flex-row items-center">
+                                        <i class="fa-solid fa-star text-[12px] text-[#FCD000]"></i>
+                                        <i class="fa-solid fa-star text-[12px] text-[#FCD000]"></i>
+                                        <i class="fa-solid fa-star text-[12px] text-[#FCD000]"></i>
+                                        <i class="fa-solid fa-star text-[12px] text-[#FCD000]"></i>
+                                        <i class="fa-solid fa-star text-[12px] text-[#FCD000]"></i>
+            
+                                        <p class="text-[14px] text-[#808080] ml-[5px]">543</p>
+                                    </div>
+                                    <!-- Valor(R$) -->
+                                    <div class="flex flex-col">
+                                        <p class="text-[14px] line-through text-[#808080]">R$3.999,00</p>
+                                        <div class="flex flex-row items-center">
+                                            <p class="text-[24px] text-[#404040] font-bold ">R$2.069,10</p>
+                                            <p class="text-[14px] pl-[2px]">no Pix</p>
+                                        </div>
+                                        <p class="text-[14px] text-[#59C00B]">(100% de desconto)</p>
+                                        <p class="text-[14px] text-black">ou R$ 2.299,00 em 10x de R$ 229,90 sem juros</p>
+                                    </div>
+                                
+                                </div>
+                                
+                            </div>
+        
+                        </a>
+                        
+    
+    
+                    <!-- espaçamento -->
+                    <div class="max-w-[50px]"></div>
+
+                    
+                </div>
+            </div>
+
+            <!-- Seta de Adiantar -->
+            <div class="flex items-center relative min-w-[50px]">
+                <div id="product-card-arrow-right" class="w-[64px] h-[64px]  rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.24)] bg-white flex flex-row items-center justify-center cursor-pointer absolute right-0">
+                    <i class="fa-solid fa-chevron-right text-[22px] text-azul"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,28 +2,71 @@ import express,{Request, Response, NextFunction} from 'express';
 import path from 'path';
 import jwt,{ JwtPayload } from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import fs from 'fs';
+import mongoose, { ConnectOptions } from 'mongoose';
+import multer from 'multer';
 import * as dotenv from 'dotenv';
+import { apiRouter, ecommerceRouter } from './router';
 
 dotenv.config({path:path.join(__dirname,".env")}); // carregar váriaveis de ambiente
 
 const app = express();
 const port = 3000;
 
-// Configurar a view engine para EJS
+// CODDING: Configurar a view engine para EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Configurar arquivos estáticos
+// CODDING:  Configurar arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configurar Cookies
+// CODDING:  Configurar Cookies
 app.use(cookieParser());
+
+// CODDING: Configurar Body-Parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// CODDING: Configuração do Multer
+const storage = multer.diskStorage({
+  destination: function(req,file, cb){
+    cb(null,'src/public/img/uploads');
+  },
+  filename: function(req, file, cb){
+    const uniqueSuffix = Date.now()+'-'+Math.round(Math.random()*1E6) 
+    const fileExtension = path.extname(file.originalname);
+    cb(null,file.fieldname+'-'+uniqueSuffix+fileExtension);
+  }
+});
+
+function fileFilter(req:any, file:any,cb:any){
+  if (!file.originalname.match(/\.(jpg|jpeg|png|webp)$/)) {
+    return cb(new Error('Apenas arquivos de imagem são permitidos!'), false);
+  }
+  cb(null, true);
+}
+
+const upload = multer({ storage: storage,
+fileFilter: fileFilter});
+
+// CODDING: Configurar Rotas
+app.use('/api',apiRouter);
+app.use('/',ecommerceRouter);
+
+// CODDING: Configurar Banco de Dados | MongoDB
+mongoose.connect(process.env.MONGODB_URI||"", { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions)
+  .then(() => {
+    console.log('MongoDB conectado');
+  })
+  .catch((error) => console.error('Erro ao conectar ao MongoDB:', error));
 
 
 const payload = {
   id:82364723424,
   name:"David Eduardo",
   email:"test@gmail.com",
+  isAdmin:true,
   senha:"123456"
 }
 
@@ -34,10 +77,18 @@ function middlewareAdicionarTokenNaReq(req: Request, res: Response, next: NextFu
   return next();
 }
 
+app.post('/upload', upload.single('imagem'), (req:any, res:any) => {
+  // Aqui você pode acessar informações sobre o arquivo enviado
+  const filename = req.file.filename;
+  console.log('filename:',filename);
+
+  // Envie uma resposta ao cliente
+  res.json({message: `Upload da imagem '${filename}' concluído.`, file:req.file});
+});
+
 interface RequestInterface extends Request{
   user?: JwtPayload;
 }
-
 
 function auth(req: RequestInterface, res: Response, next: NextFunction){
   const token = req.cookies.authToken;
@@ -71,11 +122,19 @@ app.get('/logout',(req,res,next)=>{
   res.clearCookie('authToken');
   return res.redirect('/')
 })
-app.get('/login',(req,res, next)=>{ // Criar Cookie e redirecionar pra "/"
-  const token = jwt.sign(payload, process.env.SECRET_KEY||'',{expiresIn: 3600});
-  res.cookie('authToken',token);
-  return res.redirect('/');
-})
+app.get('/login', (req, res, next) => {
+  // CODDING: Criar Token
+  const token = jwt.sign(payload, process.env.SECRET_KEY || '', { expiresIn: 3600 });
+  res.cookie('authToken', token);
+  console.log("/login req.cookies:",req.cookies);
+  
+  // CODDING: Redirecionamento
+  const { redirect } = req.query;
+  const redirectPath = redirect || '/';
+  
+  return res.redirect(`${redirectPath}`);
+
+});
 app.get('/',auth,(req: RequestInterface, res) => {
   // website.navbar.desktop.menu["mouse over with expanding"][0].expanding
   // website.navbar.desktop.menu["mouse over with expanding"][0].icon.fontawesome
@@ -192,12 +251,114 @@ app.get('/',auth,(req: RequestInterface, res) => {
       }
     }
   }
+
+  const menuExpanding = [
+    {
+      label:"Todos os Departamentos",
+      icon:{
+        name:"fa-solid fa-bars",
+        size:"text-[25px]"
+      },
+      expanded:{
+          "coluna 1":[
+            {label:"Ar e Ventilação",href:"/"},
+            {label:"Artesanato",href:"/"},
+            {label:"Artigos de Festa",href:"/"},
+            {label:"Áudio",href:"/"},
+          ],
+          "coluna 2":[
+            {label:"Decoração",href:"/"},
+            {label:"Eletrodomésticos",href:"/"},
+            {label:"Eletroportáteis",href:"/"},
+            {label:"Esporte e Lazer",href:"/"},
+          ],
+          "coluna 3":[
+            {label:"Pet Shop",href:"/"},
+            {label:"Religião e Espiritualidade",href:"/"},
+            {label:"Relógios",href:"/"},
+            {label:"Saúde e Cuidados Pessoais",href:"/"},
+          ]
+        },
+      
+    },
+    {
+      label:"Ofertas do Dia",
+      expanded:{
+          "coluna 1":[
+            {label:"Ar e Ventilação",href:"/"},
+            {label:"Artesanato",href:"/"},
+            {label:"Artigos de Festa",href:"/"},
+            {label:"Áudio",href:"/"},
+          ],
+          "coluna 2":[
+            {label:"Decoração",href:"/"},
+            {label:"Eletrodomésticos",href:"/"},
+            {label:"Eletroportáteis",href:"/"},
+            {label:"Esporte e Lazer",href:"/"},
+          ],
+          "coluna 3":[
+            {label:"Pet Shop",href:"/"},
+            {label:"Religião e Espiritualidade",href:"/"},
+            {label:"Relógios",href:"/"},
+            {label:"Saúde e Cuidados Pessoais",href:"/"},
+          ]
+        },
+      
+    },
+    {
+      label:"Celulares",
+      expanded:{
+          "coluna 1":[
+            {label:"Ar e Ventilação",href:"/"},
+            {label:"Artesanato",href:"/"},
+            {label:"Artigos de Festa",href:"/"},
+            {label:"Áudio",href:"/"},
+          ]
+        },
+      
+    },
+    {
+      label:"Móveis",
+      expanded:{
+          "coluna 1":[
+            {label:"Ar e Ventilação",href:"/"},
+            {label:"Artesanato",href:"/"},
+            {label:"Artigos de Festa",href:"/"},
+            {label:"Áudio",href:"/"},
+          ]
+      },
+      
+    },
+    {
+      label:"Eletrodomésticos",
+      expanded:{
+          "coluna 1":[
+            {label:"Ar e Ventilação",href:"/"},
+            {label:"Artesanato",href:"/"},
+            {label:"Artigos de Festa",href:"/"},
+            {label:"Áudio",href:"/"},
+          ]
+        },
+    },
+    {
+      label:"TV e Vídeo",
+      expanded:{
+          "coluna 1":[
+            {label:"Ar e Ventilação",href:"/"},
+            {label:"Artesanato",href:"/"},
+            {label:"Artigos de Festa",href:"/"},
+            {label:"Áudio",href:"/"},
+          ]
+      },
+    }
+  ] 
   
-  res.render('pages/home', { website,user:req.user , title: 'Titulo: Express com TypeScript' , message: `Body: Express com Typescript`});
+  res.render('pages/home', { website,menuExpanding,user:req.user , title: 'Titulo: Express com TypeScript' , message: `Body: Express com Typescript`});
   
   
 });
 
+// CODDING: Iniciar Aplicação
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
