@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { ProdutoModel } from '../../model/produtoModel';
+import { ProdutoModel } from '../../model/produto';
 import mongoose from 'mongoose';
 import { authWithCookie } from '../auth';
 

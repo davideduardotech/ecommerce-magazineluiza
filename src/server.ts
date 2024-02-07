@@ -2,7 +2,7 @@ import express,{Request, Response, NextFunction} from 'express';
 import path from 'path';
 import jwt,{ JwtPayload } from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
+import bodyParser, { json } from 'body-parser';
 import fs from 'fs';
 import mongoose, { ConnectOptions } from 'mongoose';
 import multer from 'multer';
@@ -54,6 +54,8 @@ fileFilter: fileFilter});
 app.use('/api',apiRouter);
 app.use('/',ecommerceRouter);
 
+
+
 // CODDING: Configurar Banco de Dados | MongoDB
 mongoose.connect(process.env.MONGODB_URI||"", { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions)
   .then(() => {
@@ -62,10 +64,45 @@ mongoose.connect(process.env.MONGODB_URI||"", { useNewUrlParser: true, useUnifie
   .catch((error) => console.error('Erro ao conectar ao MongoDB:', error));
 
 
+// criar produto
+function authForCreateProduct(req: any, res:any, next: any){
+  try{
+    const token = req.headers.authorization?.split(' ')[1].trim();
+    if(!token) return res.status(401).json({error:'token inválido'});
+    
+    const payload = jwt.verify(token, process.env.SECRET_KEY||'');
+
+    req.user = payload;
+    next();
+
+  }catch(error){
+    if(error instanceof jwt.TokenExpiredError){
+      return res.status(401).json({error:'token expirado'});
+    }
+    return res.status(401).json({error:'token inválido'});
+  }
+}
+
+app.post('/criar-produto',authForCreateProduct,(req:any, res:any, next: any)=>{
+  try{
+    const produtoData = req.body;
+    if(!produtoData) return res.status(404).json({error:'preencha as informações do produto'});
+
+
+  }catch(error){
+    return res.status(500).json({error:'ocorreu um erro ao tentar criar produto'});
+  }
+})
+
+
+
 const payload = {
   id:82364723424,
   name:"David Eduardo",
   email:"test@gmail.com",
+  profile:{
+    image:"default"
+  },
   isAdmin:true,
   senha:"123456"
 }
@@ -77,7 +114,37 @@ function middlewareAdicionarTokenNaReq(req: Request, res: Response, next: NextFu
   return next();
 }
 
-app.post('/upload', upload.single('imagem'), (req:any, res:any) => {
+function authToken(req:any, res:any, next:any){
+  try{
+    const authorization = req.headers.authorization;
+    if(!authorization) return res.status(401).json({error:'autorização não encontrada'})
+    const token = authorization.split(' ')[1];
+      
+    if(!token) return res.status(401).json({error: 'token inválido'});
+
+    const payload = jwt.verify(token,process.env.SECRET_KEY||'');
+    if(payload){ 
+      console.log('usuario autenticado por token:',payload);
+      return res.status(200).json({payload});
+      next()
+    }
+
+    return res.status(401).json({error:'não autorizado'});
+
+  }catch(error){
+    if(error instanceof jwt.JsonWebTokenError && error.message == 'jwt malformed'){
+      return res.status(401).json({ error: 'Token JWT inválido ou malformado' });
+    }
+
+    if(error instanceof jwt.JsonWebTokenError){
+      return res.status(401).json({error:`token inválido`})
+    }
+    console.log('error:',error);
+    return res.status(500).json({error:`erro interno do servidor, error: ${error}`});
+  }
+}
+
+app.post('/upload', authToken, upload.single('imagem'), (req:any, res:any) => {
   // Aqui você pode acessar informações sobre o arquivo enviado
   const filename = req.file.filename;
   console.log('filename:',filename);
@@ -251,7 +318,6 @@ app.get('/',auth,(req: RequestInterface, res) => {
       }
     }
   }
-
   const menuExpanding = [
     {
       label:"Todos os Departamentos",

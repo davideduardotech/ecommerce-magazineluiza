@@ -1,0 +1,82 @@
+<nav class="flex flex-col bg-azul w-screen">
+    <div class="flex flex-row items-center space-x-[20px] px-[16px] py-[16px]">
+        <!-- bars mobile -->
+        <div id="menu-mobile-bars-container" class="relative h-[30px] min-w-[30px] rounded-tl-[10px] rounded-tr-[10px] flex flex-row justify-center items-center">
+            <i id="menu-mobile-bars-icon" class="fa-solid fa-bars text-[30px] text-white"></i>
+
+            <!-- dropdown -->
+            <div id="menu-mobile-dropdown" class="hidden absolute border-b-[5px] shadow-[0_5px_15px_rgba(0,0,0,0.35)] border-azul z-10 top-[40px] left-0 bg-white flex flex-col w-[80vw]">
+
+                <% if(typeof user !== 'undefined') {%>
+                    <!-- perfil logado -->
+                    <div class="flex flex-row space-x-[10px] justify-center items-center  py-[32px]">
+                        <div class="w-[50px] h-[50px] bg-[#0086FF] flex flex-row justify-center items-center overflow-hidden rounded-full shadow-[0_5px_15px_rgba(0,0,0,0.35)]">
+                            <img class="w-full" src="/img/profile/default/default.jpeg" alt="imagem de perfil"/>
+                        </div>
+                        <div class="flex flex-col items-start justify-center text-sm text-azul">
+                            <p class="font-bold leading-none"><%= user.name %> <% if(typeof user.isAdmin !== 'undefined'){ %><span class="px-[16px] rounded-[10px] bg-azul text-white">ADMIN</span><%}%></p>
+                            <p class="text-azul leading-none <% if(typeof user.isAdmin !== 'undefined'){ %>leading-normal<%}%> "><%= user.email %></p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row justify-center items-center">
+                        <hr class="w-[80%]">
+                    </div>
+                    
+                    <!-- sair -->
+                    <a href="/logout">
+                        <div class="flex flex-row justify-center items-center cursor-pointer py-[16px]">
+                            <div class="bg-azul w-[80%] flex flex-row justify-center items-center space-x-[16px] rounded-[5px] py-[8px] ">
+                                <i class="fa-solid fa-right-from-bracket text-sm text-white"></i>
+                                <p class="text-sm text-white">Sair</p>
+                            </div>
+                        </div>
+                    </a>
+                <%}else{%>
+                    <!-- realizar login -->
+                    <div class="flex flex-col justify-center items-center py-[32px]">
+                        <p class="text-sm text-azul font-bold leading-none">Bem-vindo :)</p>
+                        <a href="/login"><p class="text-sm text-azul leading-none underline cursor-pointer">Entre ou Cadastre-se</p></a>
+                    </div>
+
+                <%}%>
+                
+
+                
+                
+            </div>
+        </div>
+
+        <!-- barra de navegação -->
+        <div class="flex flex-row flex-grow relative">
+            <input type="text" placeholder="Procurar produto" class="w-full focus:outline-none rounded-[10px] text-sm h-[50px] bg-white text-gray-900 pl-[16px] pr-[40px] py-2.5">
+            <div class="absolute right-0 w-[50px] h-[50px] flex flex-row justify-center items-center">
+                <i class="fa-solid fa-magnifying-glass text-[18px] text-azul"></i>
+            </div>
+        </div>
+
+        <!-- icone de favorito e carrinho de compras -->
+        <div class="flex flex-row items-start space-x-[20px]">
+            <!-- icone de favorito -->
+            <div class="flex flex-row items-center justify-center w-[30px] h-[30px] relative transition-transform duration-500 hover:scale-110">
+                <i class="fa-solid fa-heart text-white text-[30px]"></i>
+                <div class="absolute right-[-10px] bottom-[-10px] w-[24px] h-[24px] rounded-full flex flex-row justify-center items-center border-[2px] border-azul bg-[#58C22E]">
+                    <p class="text-[14px] text-white">0</p>
+                </div>
+            </div>
+            <!-- icone de carrinho -->
+            <div class="relative flex flex-row items-center justify-center w-[30px] h-[30px] transition-transform duration-500 hover:scale-110">
+                <i class="fa-solid fa-bag-shopping text-white text-[30px]"></i>
+                <div class="absolute right-[-10px] bottom-[-10px] flex flex-row items-center justify-center w-[24px] h-[24px] bg-[#58C22E] border-2 border-azul rounded-full">
+                    <p class="text-[14px] text-white">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <hr class="h-[5px]  bg-gradient-to-r from-[#FECB08] via-[#D039F2] to-[#1BDE1E] border-none">
+    </div>
+</nav>
+
+<script src="../js/navbar/navbar-mobile-first.js"></script>

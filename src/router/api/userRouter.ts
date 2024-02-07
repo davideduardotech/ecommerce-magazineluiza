@@ -1,15 +1,24 @@
 import express, { Router } from 'express';
-import { getUserById, createUser } from '../../controllers/userController';
+import { getUserById, createUser, loginUser } from '../../controllers/userController';
 import { auth } from '../auth';
 
 const userRouter: Router = express.Router();
 
+// login
+userRouter.post('/login',loginUser);
 
-userRouter.get('/',auth,getUserById);
+// visualizar {Object} do usuario
+userRouter.get('/',auth,getUserById); 
+
+// criar usuário
 userRouter.post('/',createUser);
+
+// alterar usuário
 userRouter.put('/',()=>{
     // atualizar usuario
 })
+
+// deletar usuário
 userRouter.delete('/',()=>{
     // excluir usuario
 })

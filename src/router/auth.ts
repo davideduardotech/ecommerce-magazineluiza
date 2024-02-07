@@ -1,17 +1,16 @@
 import jwt,{ JwtPayload} from "jsonwebtoken";
 
 export const auth = (req: any, res: any, next: any) =>{
-    const token = req.headers.authorization;
-    if(!token) return res.status(404).json({error: 'token não encontrado'});
-    
-    
     try{
-        const tokenWithoutBearer = token.replace('Bearer','').trim();
-        const payload = jwt.verify(tokenWithoutBearer, process.env.SECRET_KEY||'');
+        const token = req.headers.authorization?.split(' ')[1].trim();
+        const payload = jwt.verify(token, process.env.SECRET_KEY||'');
         req.user = payload;
         next();
     }catch(error){
-        return res.status(500).json({erro: 'token inválido'});
+        if(error instanceof jwt.TokenExpiredError){
+            return res.status(401).json({error:'token expirado'});
+        }
+        return res.status(401).json({error: 'token inválido'});
     }
 } 
 

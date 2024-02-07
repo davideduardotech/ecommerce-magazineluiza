@@ -2,6 +2,11 @@
     <head>
         <title><%= title%></title>
 
+         
+        <meta name="viewport"
+              content="width=device-width, 
+                      initial-scale=1.0"> 
+
         <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +43,10 @@
     </head>
     <body>
         <!-- barra de navegação -->
-        <%- include('../partials/navbar.ejs')%>
+        <%- include('../partials/navbar-mobile-first.ejs')%>
+
+        <!-- Produtos -->
+        <%- include('../partials/product/products-container.ejs') %>
 
         <!-- Produtos -->
         <%- include('../partials/product/productContainer.ejs') %>
@@ -48,7 +56,6 @@
 
 
         <!-- Javascript -->
-        <script src="js/navbar/navbar.js"></script>
         <script src="js/homepage/script.js"></script>
         
     </body>
