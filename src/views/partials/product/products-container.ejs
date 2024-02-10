@@ -2,162 +2,69 @@
     <!-- Container -->
     <div class="w-[90%] px-[8px] py-[16px] bg-white rounded-[10px] shadow-[0_8px_24px_rgba(149,157,165,0.2)]">
         <!-- titulo do container -->
-        <div class="flex flex-row justify-start items-center px-[8px]">
-            <h1 class="text-[18px] text-[#404040]">Produtos mais vendidos</h1>
+        <div class="flex flex-row justify-start items-center px-[8px] my-[16px] sm:my-[24px] md:my-[32px]  space-x-[12px]">
+            <div class="w-[50px] sm:w-[60px] md:[70px] h-[50px] sm:h-[60px] md:[70px]  rounded-[10px] bg-azul flex flex-row justify-center items-center">
+                <i class="fa-solid fa-cart-shopping text-white text-sm sm:text-lg lg:text-xl/none "></i>
+            </div>
+
+            <div class="flex flex-col justify-center items-start">
+                <h1 class="text-lg/none sm:text-xl/none md:text-xl/none font-bold text-[#404040]">Produtos mais vendidos</h1>
+                <h1 class="text-sm/none sm:text-base/none md:text-xl/none font-light text-[#404040]">novidades da semana</h1>
+            </div>
         </div>
 
-        <!-- component: products loading -->
+
+        <!-- produtos carregando -->
         <%- include('components/products-loading.ejs') %>
 
-        <!-- cards dos produtos na horizontal -->
-        <div class="relative">
+        <!-- visualizar produtos -->
+        <div id="products-container" class="relative">
             <!-- botão de voltar -->
-            <div id="products-arrow-left" class="absolute left-[-20px] top-[45%] min-w-[50px] min-h-[50px] flex flex-row justify-center items-center bg-white rounded-full shadow-[0_8px_24px_rgba(149,157,165,0.2)] hover:shadow-[0_5px_15px_rgba(0,0,0,0.35)] ">
-                <i class="fa-solid fa-chevron-left text-[18px] text-azul"></i>
+            <div id="products-arrow-left" class="absolute left-[-20px] top-[45%] hover:cursor-pointer w-[50px] sm:w-[60px] md:w-[70px] h-[50px] sm:h-[60px] md:h-[70px] flex flex-row justify-center items-center bg-white rounded-full shadow-[0_8px_24px_rgba(149,157,165,0.2)] hover:shadow-[0_5px_15px_rgba(0,0,0,0.35)] ">
+                <i class="fa-solid fa-chevron-left text-sm sm:text-lg md:text-xl text-azul"></i>
             </div>
 
             <!-- produtos -->
-            <div id="products" class="flex flex-row space-x-[15px] overflow-x-auto px-[8px] py-[16px]">
+            <div id="products-container-list" class="flex flex-row space-x-[15px] overflow-x-auto mx-[8px] py-[16px]">
                 <!-- produto -->
-                <div id="product-container" class="min-w-[150px] sm:min-w-[250px] flex flex-col">
+                <div id="product-container" class="hidden min-w-[150px] sm:min-w-[250px] flex flex-col">
                     <!-- imagem do produto -->
                     <div class="w-full h-[150px] bg-blue-900">
 
                     </div>
 
                     <!-- titulo do produto -->
-                    <p id="product-text" class="text-sm text-[#404040]">Smartphone Samsung Galaxy A14 128GB Preto 5G Octa-Core 4GB RAM 6</p> <!-- lmimitar 65 caracters -->
+                    <p id="product-text" class="text-sm sm:text-base md:text-lg text-[#404040]">Smartphone Samsung Galaxy A14 128GB Preto 5G Octa-Core 4GB RAM 6</p> <!-- lmimitar 65 caracters -->
                     
 
                     <!-- avaliação de produto -->
                     <div class="flex flex-row justify-start items-center">
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <p class="text-sm text-[#404040] ml-[8px]">345</p>
+                        <i class="fa-solid fa-star text-sm sm:text-base md:text-lg text-[#FCD000]"></i>
+                        <i class="fa-solid fa-star text-sm sm:text-base md:text-lg text-[#FCD000]"></i>
+                        <i class="fa-solid fa-star text-sm sm:text-base md:text-lg text-[#FCD000]"></i>
+                        <i class="fa-solid fa-star text-sm sm:text-base md:text-lg text-[#FCD000]"></i>
+                        <i class="fa-solid fa-star text-sm sm:text-base md:text-lg text-[#FCD000]"></i>
+                        <p class="text-sm sm:text-base md:text-lg text-[#404040] ml-[8px]">345</p>
                     </div>
 
                     <!-- preço do produto -->
                     <div class="flex flex-col justify-start">
-                        <p class="text-sm text-[#404040] line-through">R$3.764,24</p>
+                        <p class="text-sm sm:text-base md:text-lg text-[#404040] line-through">R$3.764,24</p>
                         <div class="flex flex-row justify-start items-center space-x-[5px]">
-                            <p class="text-[18px] font-bold text-[#404040]">R$2.997.90</p>
-                            <p class="text-sm text-[#404040]">no Pix</p>
+                            <p class="text-lg sm:text-xl font-bold text-[#404040]">R$2.997.90</p>
+                            <p class="text-sm sm:text-base md:text-lg text-[#404040]">no Pix</p>
                         </div>
-                        <p class="text-[#58C22E] text-sm">(10% de desconto)</p>
-                        <p class="text-[#404040] text-sm">de R$3.598,00 por apenas 10x de R$359,80 sem juros</p>
+                        <p class="text-[#58C22E] text-sm sm:text-base md:text-lg">(10% de desconto)</p>
+                        <p class="text-[#404040] text-sm sm:text-base md:text-lg">de R$3.598,00 por apenas 10x de R$359,80 sem juros</p>
 
                     </div>
                 </div>
-                <!-- produto -->
-                <div class="min-w-[150px] sm:min-w-[250px] flex flex-col">
-                    <!-- imagem do produto -->
-                    <div class="w-full h-[150px] bg-blue-900">
-
-                    </div>
-
-                    <!-- titulo do produto -->
-                    <div>
-                        <p class="text-sm text-[#404040]">Smartphone Samsung Galaxy A14 128GB Preto 5G Octa-Core 4GB RAM 6</p> <!-- lmimitar 65 caracters -->
-                    </div>
-
-                    <!-- avaliação de produto -->
-                    <div class="flex flex-row justify-start items-center">
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <p class="text-sm text-[#404040] ml-[8px]">345</p>
-                    </div>
-
-                    <!-- preço do produto -->
-                    <div class="flex flex-col justify-start">
-                        <p class="text-sm text-[#404040] line-through">R$3.764,24</p>
-                        <div class="flex flex-row justify-start items-center space-x-[5px]">
-                            <p class="text-[18px] font-bold text-[#404040]">R$2.997.90</p>
-                            <p class="text-sm text-[#404040]">no Pix</p>
-                        </div>
-                        <p class="text-[#58C22E] text-sm">(10% de desconto)</p>
-                        <p class="text-[#404040] text-sm">de R$3.598,00 por apenas 10x de R$359,80 sem juros</p>
-
-                    </div>
-                </div>
-                <!-- produto -->
-                <div class="min-w-[150px] sm:min-w-[250px] flex flex-col">
-                    <!-- imagem do produto -->
-                    <div class="w-full h-[150px] bg-blue-900">
-
-                    </div>
-
-                    <!-- titulo do produto -->
-                    <div>
-                        <p class="text-sm text-[#404040]">Smartphone Samsung Galaxy A14 128GB Preto 5G Octa-Core 4GB RAM 6</p> <!-- lmimitar 65 caracters -->
-                    </div>
-
-                    <!-- avaliação de produto -->
-                    <div class="flex flex-row justify-start items-center">
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <p class="text-sm text-[#404040] ml-[8px]">345</p>
-                    </div>
-
-                    <!-- preço do produto -->
-                    <div class="flex flex-col justify-start">
-                        <p class="text-sm text-[#404040] line-through">R$3.764,24</p>
-                        <div class="flex flex-row justify-start items-center space-x-[5px]">
-                            <p class="text-[18px] font-bold text-[#404040]">R$2.997.90</p>
-                            <p class="text-sm text-[#404040]">no Pix</p>
-                        </div>
-                        <p class="text-[#58C22E] text-sm">(10% de desconto)</p>
-                        <p class="text-[#404040] text-sm">de R$3.598,00 por apenas 10x de R$359,80 sem juros</p>
-
-                    </div>
-                </div>
-                <!-- produto -->
-                <div class="min-w-[150px] sm:min-w-[250px] flex flex-col">
-                    <!-- imagem do produto -->
-                    <div class="w-full h-[150px] bg-blue-900">
-
-                    </div>
-
-                    <!-- titulo do produto -->
-                    <div>
-                        <p class="text-sm text-[#404040]">Smartphone Samsung Galaxy A14 128GB Preto 5G Octa-Core 4GB RAM 6</p> <!-- lmimitar 65 caracters -->
-                    </div>
-
-                    <!-- avaliação de produto -->
-                    <div class="flex flex-row justify-start items-center">
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <i class="fa-solid fa-star text-sm text-[#FCD000]"></i>
-                        <p class="text-sm text-[#404040] ml-[8px]">345</p>
-                    </div>
-
-                    <!-- preço do produto -->
-                    <div class="flex flex-col justify-start">
-                        <p class="text-sm text-[#404040] line-through">R$3.764,24</p>
-                        <div class="flex flex-row justify-start items-center space-x-[5px]">
-                            <p class="text-[18px] font-bold text-[#404040]">R$2.997.90</p>
-                            <p class="text-sm text-[#404040]">no Pix</p>
-                        </div>
-                        <p class="text-[#58C22E] text-sm">(10% de desconto)</p>
-                        <p class="text-[#404040] text-sm">de R$3.598,00 por apenas 10x de R$359,80 sem juros</p>
-
-                    </div>
-                </div>
+                
             </div>
             
             <!-- botão de avançar -->
-            <div id="products-arrow-right" class="absolute right-[-20px] top-[45%] flex flex-row justify-center items-center min-w-[50px] min-h-[50px] bg-white rounded-full shadow-[0_8px_24px_rgba(149,157,165,0.2)] hover:shadow-[0_5px_15px_rgba(0,0,0,0.35)]">
-                <i class="fa-solid fa-chevron-right text-[18px] text-azul"></i>
+            <div id="products-arrow-right" class="absolute right-[-20px] top-[45%] hover:cursor-pointer flex flex-row justify-center items-center w-[50px] sm:w-[60px] md:w-[70px] h-[50px] sm:h-[60px] md:h-[70px] bg-white rounded-full shadow-[0_8px_24px_rgba(149,157,165,0.2)] hover:shadow-[0_5px_15px_rgba(0,0,0,0.35)]">
+                <i class="fa-solid fa-chevron-right text-sm sm:text-lg md:text-xl text-azul"></i>
             </div>
             
         </div>

@@ -8,6 +8,10 @@ import mongoose, { ConnectOptions } from 'mongoose';
 import multer from 'multer';
 import * as dotenv from 'dotenv';
 import { apiRouter, ecommerceRouter } from './router';
+import {body, validationResult } from 'express-validator';
+
+// modelo 
+import { ProdutoModel } from './model/produto';
 
 dotenv.config({path:path.join(__dirname,".env")}); // carregar váriaveis de ambiente
 
@@ -63,36 +67,6 @@ mongoose.connect(process.env.MONGODB_URI||"", { useNewUrlParser: true, useUnifie
   })
   .catch((error) => console.error('Erro ao conectar ao MongoDB:', error));
 
-
-// criar produto
-function authForCreateProduct(req: any, res:any, next: any){
-  try{
-    const token = req.headers.authorization?.split(' ')[1].trim();
-    if(!token) return res.status(401).json({error:'token inválido'});
-    
-    const payload = jwt.verify(token, process.env.SECRET_KEY||'');
-
-    req.user = payload;
-    next();
-
-  }catch(error){
-    if(error instanceof jwt.TokenExpiredError){
-      return res.status(401).json({error:'token expirado'});
-    }
-    return res.status(401).json({error:'token inválido'});
-  }
-}
-
-app.post('/criar-produto',authForCreateProduct,(req:any, res:any, next: any)=>{
-  try{
-    const produtoData = req.body;
-    if(!produtoData) return res.status(404).json({error:'preencha as informações do produto'});
-
-
-  }catch(error){
-    return res.status(500).json({error:'ocorreu um erro ao tentar criar produto'});
-  }
-})
 
 
 

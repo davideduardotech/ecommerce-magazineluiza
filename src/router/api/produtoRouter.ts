@@ -1,11 +1,15 @@
 import express,{ Router } from "express";
-import { criarProduto,searchProduto } from '../../controllers/produtoController';
+import { criarProduto,deletarProduto,searchProduto } from '../../controllers/produtoController'
+import { produtoValidation } from "../../controllers/produtoValidation";
 import { auth } from '../auth';
 
 const produtoRouter: Router = express.Router();
 
-// CODDING: Criar Produto
-produtoRouter.post('/', auth,criarProduto);
+// criar produto
+produtoRouter.post('/', auth,produtoValidation.criarProduto,criarProduto);
+
+// deletar produto
+produtoRouter.delete('/:id',auth,deletarProduto);
 
 // CODDING: Buscar Produto
 produtoRouter.get('/search',searchProduto);
