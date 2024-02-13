@@ -72,7 +72,7 @@ mongoose.connect(process.env.MONGODB_URI||"", { useNewUrlParser: true, useUnifie
 
 const payload = {
   id:82364723424,
-  name:"David Eduardo",
+  nome:"David Eduardo",
   email:"test@gmail.com",
   profile:{
     image:"default"
@@ -393,7 +393,7 @@ app.get('/',auth,(req: RequestInterface, res) => {
     }
   ] 
   
-  res.render('pages/home', { website,menuExpanding,user:req.user , title: 'Titulo: Express com TypeScript' , message: `Body: Express com Typescript`});
+  res.render('pages/home/home', { website,menuExpanding,user:req.user , title: 'Titulo: Express com TypeScript' , message: `Body: Express com Typescript`});
   
   
 });

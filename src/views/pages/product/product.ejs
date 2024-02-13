@@ -1,0 +1,206 @@
+<html>
+    <head>
+        <title><%= produto.nome || 'Produto' %> </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+        <%- include('../../partials/head/googlefonts.ejs') %> <!-- Google Fonts -->
+        <%- include('../../partials/head/fontawesome.ejs') %> <!-- Font Awesome -->
+        <%- include('../../partials/head/tailwindcss.ejs') %> <!-- Tailwind CSS -->
+
+        <link rel="stylesheet" href="/css/scrollbar.css">
+
+    </head>
+    <body class="bg-[#F4F4F4] h-auto border-2 border-red-900 relative">
+        
+        <div class="fixed w-screen h-screen bg-black bg-opacity-10 z-10 flex flex-row justify-center items-center">
+            
+            <!-- CODDING: Popup -->
+            <div class="w-[90%] sm:w-[70%] lg:w-[50%] bg-white rounded-[10px] relative py-[16px] sm:py-[24px] md:py-[32px] border-b-[5px] border-azul">
+
+                <!-- CODDING: Upload de Imagem -->
+                <div id="popup-input-file-container" class="w-full flex flex-row justify-center mb-[16px] sm:mb-[24px] md:mb-[32px]">
+                    <!-- CODDING: Input personalizado-->
+                    <label for="popup-input-file" class="w-[90%] h-[200px] rounded-[10px] space-y-[10px] flex flex-col justify-center items-center cursor-pointer transition-transform duration-500 hover:scale-105 ">
+                        <i class="fa-solid fa-cloud-arrow-up text-azul text-3xl"></i>
+                        <div class="flex flex-col justify-center items-center">
+                            <p class="text-lg  font-bold text-azul text-center">Clique para fazer upload de imagem</p>
+                            <p class="text-base  text-azul text-center">SVG, PNG, JPEG, WEBP (800x400)</p>
+                        </div>
+                    </label>
+                    
+                    <!-- CODDING: Input padrão-->
+                    <input id="popup-input-file" type="file" accept=".png, .jpeg, .svg, .webp" class="hidden">
+                </div>
+                
+                <!-- CODDING: fechar -->
+                <div id="popup-close" class="w-[50px] h-[50px] bg-azul rounded-[10px] absolute right-[10px] top-[10px] flex flex-row justify-center items-center cursor-pointer">
+                    <i class="fa-solid fa-xmark text-white text-xl"></i>
+                </div>
+
+                <!-- CODDING: previa da imagem-->
+                <div id="popup-image-preview-container" class="hidden w-full h-[200px] flex flex-row justify-center items-center mb-[16px] sm:mb-[24px] md:mb-[32px]">
+                    <div class="w-[80%] h-[200px] flex flex-row justify-center items-center">
+                        <img id="popup-image-preview" src="/img/image01.webp" class="max-w-full max-h-full">
+                    </div>
+                </div>
+
+                <!-- CODDING: detalhes do arquivo -->
+                <div id="popup-file-details-container" class="hidden w-full flex flex-row justify-center items-center mb-[16px] sm:mb-[24px] md:mb-[32px]">
+                    <div class="w-[80%] flex flex-row justify-center items-center border-[1px] border-[#e5e5e5] px-[16px] py-[8px] rounded-[10px] ">
+                        <div class="flex flex-row justify-start items-center rounded-[10px] space-x-[10px]">
+                            <!-- CODDING: icone -->
+                            <div class="min-w-[60px] min-h-[60px] rounded-[10px] bg-azul flex flex-row justify-center items-center">
+                                <i class="fa-solid fa-file text-white text-2xl"></i>
+                            </div>
+                            <!-- CODDING: detalhes do arquivo -->
+                            <div class="min-w-[150px] md:min-w-[250px] flex flex-col justify-center items-start">
+                                <p id="popup-file-details-name" class="text-lg font-bold text-azul">imagem01.webp</p>
+                                <div class="w-full flex flex-row justify-between items-center">
+                                    <p id="popup-file-details-type" class="text-base text-azul">WEBP(800x400)</p>
+                                    <p id="popup-file-details-size" class="text-base text-azul">1.5MB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CODDING: botões -->
+                <div id="popup-buttons-container" class="hidden w-full flex flex-row justify-center items-center">
+                    <div class="w-[80%] flex flex-row justify-center items-center space-x-[5px]">
+                        <button id="popup-button-back" class="h-[50px] flex-grow bg-transparent text-base text-azul border-2 border-azul rounded-[10px]">Voltar</button>
+                        <button id="popup-button-upload" class="h-[50px] flex-grow px-[8px] bg-azul text-base text-white rounded-[10px]"><i class="fa-solid fa-cloud-arrow-up mr-[10px]"></i>Fazer Upload</button>
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+
+        <!-- navbar -->
+        <%- include('../../partials/navbar.ejs') %>
+
+
+        
+        <!-- Produto -->
+        <div class="w-full my-[32px] flex flex-row justify-center">
+            <div class="w-[90%] bg-white rounded-[10px] shadow-[0_8px_24px_rgba(149,157,165,0.2)] space-y-[10px]">
+                <!-- CODDING: Titulo -->
+                <div class="w-full flex flex-col py-[16px] sm:py-[24px] md:py-[32px] px-[16px]">
+                    <h1 class="text-xl sm:text-2xl  font-medium text-[#404040]"><%= produto.name %></h1>
+                    <p class="text-base sm:text-lg text-[#404040]">Código <%= produto._id %></p>
+                </div>
+
+                <div class="flex flex-row justify-center flex-wrap sm:flex-wrap md:flex-nowrap px-[16px]">
+                    <!-- CODDING: imagens do produto -->
+                    <div class="flex-grow  flex flex-row space-x-[10px]">
+                        <!-- CODDING: 4 imagens -->
+                        <div class="flex flex-col space-y-[10px]">
+                            <div id="product-image-01" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-azul p-[8px] flex flex-row justify-center items-center relative">
+                                <img src="<%= produto.image[0].url %>" alt="">
+                                <% if(typeof user !== 'undefined' && user.isAdmin) { %>
+                                    
+                                    <% if(produto.image[0].url === "/img/default/product_default.png") { %>
+                                        <!-- CODDING: Adicionar imagem -->
+                                        <div class="flex flex-row items-center absolute left-[100px] bottom-[10px] space-x-[10px] cursor-pointer transition-transform duration-500 hover:scale-105">
+                                            <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
+                                                <i class="fa-solid fa-plus text-sm text-white"></i>
+                                            </div>
+                                            <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap">Adicionar Imagem</p>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="flex flex-col space-y-[10px] absolute left-[100px] bottom-[10px]">
+                                            <!-- CODDING: Remover imagem -->
+                                            <div class="flex flex-row items-center space-x-[10px] transition-transform duration-500 hover:scale-105 cursor-pointer">
+                                                <div class="min-w-[40px] min-h-[40px] rounded-full bg-[#F54655] flex flex-row justify-center items-center">
+                                                    <i class="fa-solid fa-trash text-sm text-white"></i>
+                                                </div>
+                                                <p class="text-[#404040] text-sm sm:text-base whitespace-nowrap">Remover Imagem</p>
+                                            </div>
+    
+                                            <!-- CODDING: Alterar imagem -->
+                                            <div class="flex flex-row items-center space-x-[10px] cursor-pointer transition-transform duration-500 hover:scale-105">
+                                                <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
+                                                    <i class="fa-solid fa-image text-sm text-white"></i>
+                                                </div>
+                                                <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap">Alterar Imagem</p>
+                                            </div>
+                                        </div>
+
+                                    <% } %>
+                                <% } %>
+                            </div>
+                            <div id="product-image-02" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[1].url %>" alt=""></div>
+                            <div id="product-image-03" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[1].url %>" alt=""></div>
+                            <div id="product-image-04" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[1].url %>" alt=""></div>
+                        </div>
+
+                        <!-- CODDING: previa imagem -->
+                        <div class="w-full h-full bg-white flex flex-row justify-center items-center">
+                            <img id="product-image-preview" src="<%= produto.image[0].url %>" alt="">
+                        </div>
+
+                    </div>
+
+                    <!-- CODDING: detalhes -->
+                    <div class="flex-grow">
+                        <div class="flex flex-col space-y-[8px] ">
+                            <div class="flex flex-row justify-between items-center">
+                                <!-- CODDING: Avaliação-->
+                                <div class="flex flex-row justify-start items-center">
+                                    <i class="fa-solid fa-star text-base text-[#FCD000]"></i>
+                                    <i class="fa-solid fa-star text-base text-[#FCD000]"></i>
+                                    <i class="fa-solid fa-star text-base text-[#FCD000]"></i>
+                                    <i class="fa-solid fa-star text-base text-[#FCD000]"></i>
+                                    <i class="fa-solid fa-star text-base text-[#FCD000]"></i>
+                                    <p class="text-base text-[#404040]">4.7 <span class="text-sm">(4694)</span></p>
+                                </div>
+
+                                <!-- CODDING: Favoritar e compartilhar -->
+                                <div class="flex flex-row items-center space-x-[15px]">
+                                    <i class="fa-regular fa-heart text-azul text-2xl transition-transform duration-500 hover:scale-105"></i>
+                                    <i class="fa-solid fa-share-nodes text-azul text-2xl transition-transform duration-500 hover:scale-105"></i>
+                                </div>
+                            </div>
+
+                            <!-- CODDING: detalhes do preço(R$) -->
+                            <div class="flex flex-col">
+                                <!-- CODDING: preço(R$) com desconto -->
+                                <% if(produto.discount > 0) {%>
+                                    <p class="line-through text-lg text-[#404040]">R$<%= produto.price_without_discount %></p>
+                                    <div class="flex flex-row justify-start items-center space-x-[5px]">
+                                        <p class="text-2xl font-bold text-[#404040]">R$<%= produto.price.toFixed(2) %></p>
+                                        <p class="text-xl text-[#404040]">no Pix</p>
+                                    </div>
+                                    <p class="text-lg text-[#58C22E]">(<%= produto.discount %>% desconto)</p>
+                                <%}else{%> <!-- CODDING: preço(R$) sem desconto -->
+                                    <div class="flex flex-row justify-start items-center space-x-[5px]">
+                                        <p class="text-2xl font-bold text-[#404040]">R$<%= produto.price %></p>
+                                        <p class="text-xl text-[#404040]">no Pix</p>
+                                    </div>
+                                <%}%>
+
+                                <!-- CODDING: cartão de crédito -->
+                                <% if(produto.credit_card.installments > 0){ %>
+                                    <p class="text-lg text-[#404040]">ou R$<%= produto.credit_card.price.toFixed(2) %> em <%= produto.credit_card.installments %>x de R$<%= produto.credit_card.installment_price.toFixed(2) %> no cartão de crédito</p>
+                                <% }else{ %>
+                                    <p></p>
+                                <%}%>
+
+                            </div>
+
+                            <!-- CODDING: Botão de comprar e adicionar na sacola -->
+                            <div class="flex flex-col space-y-[5px]">
+                                <button class="w-full h-[50px] sm:h-[55px] md:h-[60px] rounded-[10px] bg-azul text-base font-bold text-white"><i class="fa-solid fa-cart-shopping mr-[5px]"></i> COMPRAR</button>
+                                <button class="w-full h-[50px] sm:h-[55px] md:h-[60px] rounded-[10px] bg-transparent text-azul border-2 border-azul text-base font-bold"><i class="fa-solid fa-bag-shopping mr-[5px]"></i> ADICIONAR A SACOLA</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+
+        </div>
+        
+        <script src="/js/pages/product/product.js"></script>
+    </body>
+</html>

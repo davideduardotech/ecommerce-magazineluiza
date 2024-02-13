@@ -7,10 +7,10 @@ const produtoSchema = new Schema({
         required: true
     },
     image:{
-        0:{url:{type: String, default:'img/default/product_default.png'}},
-        1:{url:{type: String, default:'img/default/product_default.png'}},
-        2:{url:{type: String, default:'img/default/product_default.png'}},
-        3:{url:{type: String, default:'img/default/product_default.png'}}
+        0:{url:{type: String, default:'/img/default/product_default.png'}},
+        1:{url:{type: String, default:'/img/default/product_default.png'}},
+        2:{url:{type: String, default:'/img/default/product_default.png'}},
+        3:{url:{type: String, default:'/img/default/product_default.png'}}
     },
     category:{
         type: String,

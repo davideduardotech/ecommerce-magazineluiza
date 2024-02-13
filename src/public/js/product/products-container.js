@@ -15,15 +15,15 @@ function createProductElement(produto){
     // Parágrafo de preço
     const priceParagraph = `
         ${produto.discount > 0 ? 
-            `<p class="text-sm sm:text-base md:text-lg text-[#404040] line-through">R$${produto.price_without_discount}</p>
+            `<p class="text-sm sm:text-base md:text-lg text-[#404040] line-through">R$${produto.price_without_discount.toFixed(2)}</p>
             <div class="flex flex-row justify-start items-center space-x-[5px]">
-                <p class="text-lg sm:text-xl font-bold text-[#404040]">R$${produto.price}</p>
+                <p class="text-lg sm:text-xl font-bold text-[#404040]">R$${produto.price.toFixed(2)}</p>
                 <p class="text-sm sm:text-base md:text-lg text-[#404040]">no Pix</p>
             </div>
             <p class="text-[#58C22E] text-sm sm:text-base md:text-lg">(${produto.discount}% de desconto)</p>`
             :
             `<div class="flex flex-row justify-start items-center space-x-[5px]">
-                <p class="text-lg sm:text-xl font-bold text-[#404040]">R$${produto.price}</p>
+                <p class="text-lg sm:text-xl font-bold text-[#404040]">R$${produto.price.toFixed(2)}</p>
                 <p class="text-sm sm:text-base md:text-lg text-[#404040]">no Pix</p>
             </div>`
         }

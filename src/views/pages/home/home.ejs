@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title><%= title || "homepage"%></title>
+        <meta name="viewport"content="width=device-width, initial-scale=1.0"> 
+
+        <%- include('../../partials/head/googlefonts.ejs') %> <!-- Google Fonts -->
+        <%- include('../../partials/head/fontawesome.ejs') %> <!-- Font Awesome -->
+        <%- include('../../partials/head/tailwindcss.ejs') %> <!-- Tailwind CSS -->
+
+        <link rel="stylesheet" href="/css/scrollbar.css">
+    </head>
+    <body>
+        <!-- barra de navegação -->
+        <%- include('../../partials/navbar.ejs')%>
+
+        <!-- Produtos -->
+        <%- include('partials/product/products-container.ejs') %> 
+
+        <!-- Javascript -->
+        <script src="js/homepage/script.js"></script>
+        
+    </body>
+</html>
