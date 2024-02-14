@@ -8,11 +8,27 @@
         <%- include('../../partials/head/tailwindcss.ejs') %> <!-- Tailwind CSS -->
 
         <link rel="stylesheet" href="/css/scrollbar.css">
+        <link rel="stylesheet" href="/css/alert.css">
 
     </head>
-    <body class="bg-[#F4F4F4] h-auto border-2 border-red-900 relative">
+    <body class="bg-[#F4F4F4] h-auto relative">
+        <!-- CODDING: Mensagens de Alerta -->
+        <div id="alerts" class="overflow-y-auto overflow-x-hidden max-h-[400px] w-full fixed right-0 bottom-[10%] flex flex-col justify-center items-end space-y-[10px] z-20">
+
+            <div id="alert" class="hidden max-w-[80%] sm:max-w-[60%] md:max-w-[50%] lg:max-w-[40%] show-alert-with-animation flex flex-row justify-between items-center rounded-[10px] shadow-[0_5px_15px_rgba(0,0,0,0.35)] z-20 bg-azul">
+                <div class="flex-grow bg-white rounded-tl-[10px] rounded-bl-[10px] border-l-[5px] border-azul  flex flex-row justify-start items-center space-x-[10px] px-[16px] py-[16px]">
+                    <i id="alert-icon" class="fa-solid fa-circle-exclamation text-2xl sm:text-3xl text-azul"></i>
+                    <p id="alert-message" class="text-sm sm:text-base/tight text-azul">Imagem muito grande, escolha uma imagem abaixo de <span class="font-bold">5MB</span> pra fazer o upload</p>
+                </div>
+                <div id="alert-close" class="h-full flex flex-row justify-center items-center min-w-[50px] rounded-tr-[10px] rounded-br-[10px] bg-transparent transition-transform duration-500 hover:scale-105 cursor-pointer">
+                    <i class="fa-solid fa-xmark text-base sm:text-lg sm:text-xl text-white"></i>
+                </div>
+            </div>
+
+          
+        </div>
         
-        <div class="fixed w-screen h-screen bg-black bg-opacity-10 z-10 flex flex-row justify-center items-center">
+        <div class="hidden fixed w-screen h-screen bg-black bg-opacity-10 z-10 flex flex-row justify-center items-center">
             
             <!-- CODDING: Popup -->
             <div class="w-[90%] sm:w-[70%] lg:w-[50%] bg-white rounded-[10px] relative py-[16px] sm:py-[24px] md:py-[32px] border-b-[5px] border-azul">
@@ -101,7 +117,7 @@
                                     
                                     <% if(produto.image[0].url === "/img/default/product_default.png") { %>
                                         <!-- CODDING: Adicionar imagem -->
-                                        <div class="flex flex-row items-center absolute left-[100px] bottom-[10px] space-x-[10px] cursor-pointer transition-transform duration-500 hover:scale-105">
+                                        <div id="add-image-01" class="flex flex-row items-center absolute left-[100px] bottom-[10px] space-x-[10px] cursor-pointer transition-transform duration-500 hover:scale-105">
                                             <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
                                                 <i class="fa-solid fa-plus text-sm text-white"></i>
                                             </div>

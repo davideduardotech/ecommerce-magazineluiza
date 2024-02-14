@@ -34,21 +34,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // CODDING: Configuração do Multer
 const storage = multer.diskStorage({
-  destination: function(req,file, cb){
-    cb(null,'src/public/img/uploads');
+  destination: function(req,file, callback){
+    callback(null,'src/public/img/uploads');
   },
-  filename: function(req, file, cb){
+  filename: function(req, file, callback){
+    console.log('@filename informações do arquivo:',file);
     const uniqueSuffix = Date.now()+'-'+Math.round(Math.random()*1E6) 
     const fileExtension = path.extname(file.originalname);
-    cb(null,file.fieldname+'-'+uniqueSuffix+fileExtension);
+    callback(null,file.fieldname+'-'+uniqueSuffix+fileExtension);
   }
 });
 
-function fileFilter(req:any, file:any,cb:any){
-  if (!file.originalname.match(/\.(jpg|jpeg|png|webp)$/)) {
-    return cb(new Error('Apenas arquivos de imagem são permitidos!'), false);
+function fileFilter(req:any, file:any,callback:any){
+  if (!file.originalname.match(/\.(jpg|jpeg|png|webp|svg)$/)) {
+    return callback(new Error('Apenas arquivos de imagem são permitidos!'), false);
   }
-  cb(null, true);
+  callback(null, true);
 }
 
 const upload = multer({ storage: storage,
@@ -90,16 +91,13 @@ function middlewareAdicionarTokenNaReq(req: Request, res: Response, next: NextFu
 
 function authToken(req:any, res:any, next:any){
   try{
-    const authorization = req.headers.authorization;
-    if(!authorization) return res.status(401).json({error:'autorização não encontrada'})
-    const token = authorization.split(' ')[1];
-      
-    if(!token) return res.status(401).json({error: 'token inválido'});
-
+    const token = req.headers.authorization?.split(' ')[1];
+    if(!token) return res.status(401).json({error:'autorização não encontrada'})
+    
     const payload = jwt.verify(token,process.env.SECRET_KEY||'');
     if(payload){ 
-      console.log('usuario autenticado por token:',payload);
-      return res.status(200).json({payload});
+      req.user = payload;
+      //return res.status(200).json({payload});
       next()
     }
 
@@ -118,10 +116,11 @@ function authToken(req:any, res:any, next:any){
   }
 }
 
-app.post('/upload', authToken, upload.single('imagem'), (req:any, res:any) => {
-  // Aqui você pode acessar informações sobre o arquivo enviado
+app.post('/upload',authToken, upload.single('imagem'), (req:any, res:any) => {
+  const {} = req.body;
+  
   const filename = req.file.filename;
-  console.log('filename:',filename);
+  
 
   // Envie uma resposta ao cliente
   res.json({message: `Upload da imagem '${filename}' concluído.`, file:req.file});

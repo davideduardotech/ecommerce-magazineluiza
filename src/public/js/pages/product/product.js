@@ -1,3 +1,58 @@
+// CODDING: Mensagens de alerta
+function alert_message({type, message}){
+    // CODDING: Escolher icone 
+    const icon = type === "alert-success" ? `fa-solid fa-circle-check` :
+                 type === "alert-warning" ? `fa-solid fa-triangle-exclamation`:
+                 type === "alert-error" ? `fa-solid fa-circle-exclamation`: 
+                 type === "alert-info" ? `fa-solid fa-circle-info`:``;
+
+    if(!icon) return
+    if(!message) return
+
+    // CODDING: Criando mensagem de alerta
+    const alertElement = document.createElement('div');
+    alertElement.id = 'alert';
+    alertElement.className = 'w-[80%] sm:max-w-[60%] md:max-w-[50%] lg:w-[40%] show-alert-with-animation flex flex-row justify-between items-center rounded-[10px] shadow-[0_5px_15px_rgba(0,0,0,0.35)] z-20 bg-azul'
+    alertElement.innerHTML = `
+        <div class="flex-grow bg-white rounded-tl-[10px] rounded-bl-[10px] border-l-[5px] border-azul  flex flex-row justify-start items-center space-x-[15px] px-[16px] py-[16px]">
+            <i id="alert-icon" class="${icon} text-2xl sm:text-3xl text-azul"></i>
+            <p id="alert-message" class="text-sm sm:text-base/tight text-azul">${message}</p>
+        </div>
+        <div id="alert-close" class="h-full flex flex-row justify-center items-center min-w-[50px] rounded-tr-[10px] rounded-br-[10px] bg-transparent transition-transform duration-500 hover:scale-105 cursor-pointer">
+            <i class="fa-solid fa-xmark text-base sm:text-lg sm:text-xl text-white"></i>
+        </div>`;
+    
+    const alerts = document.getElementById('alerts');
+    if(alerts){
+        // CODDING: Adicionar mensagem de alerta
+        alerts.appendChild(alertElement);
+
+        // CODDING: Remover mensagem de alerta 
+        const alertClose = alertElement.querySelector('#alert-close');
+        if(alertClose){
+            alertClose.addEventListener('click',()=>{
+                alertElement.classList.replace('show-alert-with-animation','hidden-alert-with-animation');
+                setTimeout(()=>{
+                    alertElement.remove();
+                },1000);
+            });
+        }
+
+        // CODDING: Remover mensagem de alerta 
+        setTimeout(()=>{
+            try{
+                alertElement.classList.replace('show-alert-with-animation','hidden-alert-with-animation');
+                setTimeout(()=>{
+                    alertElement.remove();
+                },1000);
+            }catch(error){
+                console.log('erro ao tentar remover a mensagem de alerta automaticamente:',error);
+            }
+        },10000);
+
+    }
+}
+
 const productImage01 = document.getElementById('product-image-01');
 const productImage02 = document.getElementById('product-image-02');
 const productImage03 = document.getElementById('product-image-03');
@@ -14,9 +69,9 @@ const productImagePreview = document.getElementById('product-image-preview');
     })
 })
 
-// CODDING: Alterar imagem
-const popupInputFile = document.getElementById('popup-input-file');
-popupInputFile.addEventListener('change',(event)=>{
+
+// CODDING: Escolher imagem
+document.getElementById('popup-input-file').addEventListener('change',(event)=>{
     const file = event.target.files[0]; 
 
     // Esconder upload de imagem
@@ -53,6 +108,7 @@ popupInputFile.addEventListener('change',(event)=>{
     document.getElementById('popup-buttons-container').classList.remove('hidden');
 })
 
+// CODDING: Voltar Imagem
 document.getElementById('popup-button-back').addEventListener('click',()=>{
     // Esconder elementos
     ['popup-image-preview-container','popup-file-details-container','popup-buttons-container'].map(id=>document.getElementById(id)).forEach(element=> element.classList.add('hidden'));
@@ -60,4 +116,28 @@ document.getElementById('popup-button-back').addEventListener('click',()=>{
     // Mostrar upload de imagem
     document.getElementById('popup-input-file-container').classList.remove('hidden')
     document.getElementById('popup-input-file').value = '';
+
+    alert_message({type: "alert-warning", message: `Você voltou, selecione outra imagem`});
 })
+
+// CODDING: Fazer upload de imagem
+document.getElementById('popup-button-upload').addEventListener("click",async ()=>{
+    try{
+        console.log('cookies:',document.cookie.split(';'));
+        return;
+        const file = document.getElementById('popup-input-file').files[0];
+        if(file){
+            const formData = new FormData();
+            formData.append('imagem',file);
+            const request = await fetch('/upload',{
+                method: "POST",
+                body: formData
+            })
+            console.log(request);
+            console.log(request.json());
+        }
+    }catch(error){
+        console.log('error:',error);
+    }
+})
+
