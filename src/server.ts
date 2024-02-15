@@ -10,6 +10,8 @@ import * as dotenv from 'dotenv';
 import { apiRouter, ecommerceRouter } from './router';
 import {body, validationResult } from 'express-validator';
 
+import User from './model/user';
+
 // modelo 
 import { ProdutoModel } from './model/produto';
 
@@ -68,27 +70,6 @@ mongoose.connect(process.env.MONGODB_URI||"", { useNewUrlParser: true, useUnifie
   })
   .catch((error) => console.error('Erro ao conectar ao MongoDB:', error));
 
-
-
-
-const payload = {
-  id:82364723424,
-  nome:"David Eduardo",
-  email:"test@gmail.com",
-  profile:{
-    image:"default"
-  },
-  isAdmin:true,
-  senha:"123456"
-}
-
-function middlewareAdicionarTokenNaReq(req: Request, res: Response, next: NextFunction){
-  const token = jwt.sign(payload, process.env.SECRET_KEY as string,{expiresIn: 3600});
-  req.headers.authorization = token;
-  //console.log(`Middleware criou o token "${token}" e adicionou na requisição --> req.headers.authorization: ${token}`)
-  return next();
-}
-
 function authToken(req:any, res:any, next:any){
   try{
     const token = req.headers.authorization?.split(' ')[1];
@@ -98,7 +79,7 @@ function authToken(req:any, res:any, next:any){
     if(payload){ 
       req.user = payload;
       //return res.status(200).json({payload});
-      next()
+      return next()
     }
 
     return res.status(401).json({error:'não autorizado'});
@@ -116,14 +97,26 @@ function authToken(req:any, res:any, next:any){
   }
 }
 
-app.post('/upload',authToken, upload.single('imagem'), (req:any, res:any) => {
-  const {} = req.body;
+app.post('/upload',authToken, upload.single('imagem'), async (req:any, res:any, next: any) => {
+  try{
+    const uplaodData = req.body;
+  console.log('uploadData:',uplaodData);
+  console.log('user(jsonwebtoken):',req.user);
+  const user = await User.findById(new mongoose.Types.ObjectId(req.user.id));
+  if(!user) return res.status(401).json({error:`usuário não encontrado`});
+  console.log('user(mongodb):',user);
   
   const filename = req.file.filename;
+  console.log('file:',req.file);
+
+  
   
 
   // Envie uma resposta ao cliente
-  res.json({message: `Upload da imagem '${filename}' concluído.`, file:req.file});
+  return res.status(200).json({message: `Upload da imagem '${filename}' concluído.`, file:req.file});
+  }catch(error){
+
+  }
 });
 
 interface RequestInterface extends Request{
@@ -162,10 +155,13 @@ app.get('/logout',(req,res,next)=>{
   res.clearCookie('authToken');
   return res.redirect('/')
 })
-app.get('/login', (req, res, next) => {
+app.get('/login', async (req, res, next) => {
   // CODDING: Criar Token
-  const token = jwt.sign(payload, process.env.SECRET_KEY || '', { expiresIn: 3600 });
+  const user = await User.findOne({email:'teste@gmail.com'});
+  await user.refreshToken();
+  const token = user.token;
   res.cookie('authToken', token);
+  
   console.log("/login req.cookies:",req.cookies);
   
   // CODDING: Redirecionamento

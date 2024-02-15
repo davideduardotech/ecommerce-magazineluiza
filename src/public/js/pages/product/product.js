@@ -117,21 +117,25 @@ document.getElementById('popup-button-back').addEventListener('click',()=>{
     document.getElementById('popup-input-file-container').classList.remove('hidden')
     document.getElementById('popup-input-file').value = '';
 
-    alert_message({type: "alert-warning", message: `Você voltou, selecione outra imagem`});
 })
 
-// CODDING: Fazer upload de imagem
+// CODDING: Enviar Imagem(Upload)
+const uploadData = {imageIndex:0};
 document.getElementById('popup-button-upload').addEventListener("click",async ()=>{
     try{
-        console.log('cookies:',document.cookie.split(';'));
-        return;
+        const token = document.cookie.split('; ').find(cookie => cookie.startsWith('authToken')).split('=')[1];
         const file = document.getElementById('popup-input-file').files[0];
         if(file){
             const formData = new FormData();
             formData.append('imagem',file);
+            formData.uploadData = uploadData;
+          
             const request = await fetch('/upload',{
                 method: "POST",
-                body: formData
+                body: formData,
+                headers:{
+                    "Authorization":`Bearer ${token}`
+                }
             })
             console.log(request);
             console.log(request.json());
@@ -141,3 +145,30 @@ document.getElementById('popup-button-upload').addEventListener("click",async ()
     }
 })
 
+
+// CODDING: Adicionar imagem 01
+const popupContainer = document.getElementById('popup-container');
+const addImage01 = document.getElementById('add-image-01');
+const addImage02 = document.getElementById('add-image-02');
+const addImage03 = document.getElementById('add-image-03');
+const addImage04 = document.getElementById('add-image-04');
+[addImage01,addImage02,addImage03,addImage04].forEach(element=>{
+    try{
+        element.addEventListener('click',()=>{
+            popupContainer.classList.remove('hidden'); // mostrar popup de upload de imagem
+            if(element.id == 'add-image-01') uploadData.imageIndex = 0;
+            if(element.id == 'add-image-02') uploadData.imageIndex = 1;
+            if(element.id == 'add-image-03') uploadData.imageIndex = 2;
+            if(element.id == 'add-image-04') uploadData.imageIndex = 3;
+    
+            console.log('INDEX DO BOTÃO CLICADO:',uploadData.productImageIndex);
+        })
+    }catch(error){
+        console.log(error);
+    }
+});
+
+const popupClose = document.getElementById('popup-close');
+popupClose.addEventListener('click',()=>{
+    popupContainer.classList.add("hidden");
+})

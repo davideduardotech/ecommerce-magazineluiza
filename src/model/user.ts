@@ -1,17 +1,6 @@
 import mongoose, {Schema, Document, mongo} from "mongoose";
 import jwt from 'jsonwebtoken'
 
-interface UserInterface extends Document{
-    nome: String, 
-    email: String,
-    senha: String, 
-    isAdmin: boolean,
-    token: String,
-    document(): Object,
-    refreshToken(): void
-
-}
-
 const UserSchema = new Schema({
     nome: { type: String, required: true},
     email: { type: String, required: true, unique: true },
@@ -42,19 +31,16 @@ UserSchema.methods.document = function() {
 }
 
 // metodo para atualizar token
-UserSchema.methods.refreshToken = function(){
+UserSchema.methods.refreshToken = async function(){
     try{
-        console.log('token anterior:',this.token);
-        const token_anterior = this.token;
         this.token = jwt.sign(this.document(), process.env.SECRET_KEY||'',{expiresIn:'7d'});
-        console.log('token atualizado:', this.token);
-        console.log(token_anterior === this.token);
+        await this.save();
     }catch(error){
         console.log(error);
     }
 
 }
 
-const User = mongoose.model<UserInterface>('User',UserSchema);
+const User = mongoose.model<any>('User',UserSchema);
 
 export default User;
