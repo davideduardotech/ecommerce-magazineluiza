@@ -97,25 +97,36 @@ function authToken(req:any, res:any, next:any){
   }
 }
 
-app.post('/upload',authToken, upload.single('imagem'), async (req:any, res:any, next: any) => {
+app.post('/produto/:id_product/upload/image/:index_image',authToken, upload.single('imagem'), async (req:any, res:any, next: any) => {
   try{
-    const uplaodData = req.body;
-  console.log('uploadData:',uplaodData);
-  console.log('user(jsonwebtoken):',req.user);
-  const user = await User.findById(new mongoose.Types.ObjectId(req.user.id));
-  if(!user) return res.status(401).json({error:`usuário não encontrado`});
-  console.log('user(mongodb):',user);
-  
-  const filename = req.file.filename;
-  console.log('file:',req.file);
+    const {id_product,index_image} = req.params;
 
-  
-  
+    const produto = await ProdutoModel.findById(new mongoose.Types.ObjectId(id_product));
+    
+    const user = await User.findById(new mongoose.Types.ObjectId(req.user.id));
+    if(!user) return res.status(401).json({error:`usuário não encontrado`});
+    console.log(`req.user.id: ${req.user.id}(${typeof(req.user.id)}) | user._id: ${user._id.toString()}(${typeof(user._id.toString())})`);
+    if(req.user.id !== user._id.toString()) return res.status(401).json({error:'você não tem permissão para alterar esse produto'});
+    
+    const file = req.file;
+    const filename = req.file.filename;
+    const url = `/img/uploads/${filename}`;
 
-  // Envie uma resposta ao cliente
-  return res.status(200).json({message: `Upload da imagem '${filename}' concluído.`, file:req.file});
+    // CODDING: Update image
+    try{
+      const updateProduct = await ProdutoModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id_product),{[`image.${index_image}.url`]:url},{new:true})
+      console.log(`nova imagem: ${updateProduct}`);
+    }catch(error){
+      console.log('erro ao tentar fazer upload da imagem:',error);
+      return res.status(500).json({error:'erro ao tentar fazer upload da imagem'});
+    }
+    
+
+    // Envie uma resposta ao cliente
+    return res.status(200).json({message: `Upload da imagem '${filename}' concluído.`, file:req.file});
   }catch(error){
-
+    console.log(error);
+    return res.status(500).json({error:'ocorreu um erro'});
   }
 });
 

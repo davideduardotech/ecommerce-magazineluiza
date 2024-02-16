@@ -108,7 +108,7 @@
 
                 <div class="flex flex-row justify-center flex-wrap sm:flex-wrap md:flex-nowrap px-[16px]">
                     <!-- CODDING: imagens do produto -->
-                    <div class="flex-grow  flex flex-row space-x-[10px]">
+                    <div class="flex-grow  flex flex-row justify-center items-start max-h-[510px] space-x-[10px]">
                         <!-- CODDING: 4 imagens -->
                         <div class="flex flex-col space-y-[10px]">
                             <div id="product-image-01" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-azul p-[8px] flex flex-row justify-center items-center relative">
@@ -146,13 +146,13 @@
                                 <% } %>
                             </div>
                             <div id="product-image-02" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[1].url %>" alt=""></div>
-                            <div id="product-image-03" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[1].url %>" alt=""></div>
-                            <div id="product-image-04" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[1].url %>" alt=""></div>
+                            <div id="product-image-03" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[2].url %>" alt=""></div>
+                            <div id="product-image-04" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[3].url %>" alt=""></div>
                         </div>
 
                         <!-- CODDING: previa imagem -->
                         <div class="w-full h-full bg-white flex flex-row justify-center items-center">
-                            <img id="product-image-preview" src="<%= produto.image[0].url %>" alt="">
+                            <img id="product-image-preview" class="w-auto h-auto max-w-full max-h-full" src="<%= produto.image[0].url %>" alt="">
                         </div>
 
                     </div>
