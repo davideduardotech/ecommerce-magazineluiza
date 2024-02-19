@@ -21,6 +21,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
     try{
         const { nome, email, senha } = req.body;
         const newUser = new User({nome, email, senha});
+        newUser.createToken();
         await newUser.save();
         res.status(200).json({user:newUser});
     }catch(error){

@@ -70,34 +70,17 @@ mongoose.connect(process.env.MONGODB_URI||"", { useNewUrlParser: true, useUnifie
   })
   .catch((error) => console.error('Erro ao conectar ao MongoDB:', error));
 
-function authToken(req:any, res:any, next:any){
+function authJWT(req:any, res:any, next:any){
   try{
     const token = req.headers.authorization?.split(' ')[1];
-    if(!token) return res.status(401).json({error:'autorização não encontrada'})
-    
-    const payload = jwt.verify(token,process.env.SECRET_KEY||'');
-    if(payload){ 
-      req.user = payload;
-      //return res.status(200).json({payload});
-      return next()
-    }
-
-    return res.status(401).json({error:'não autorizado'});
-
+    return res.status(200).json({token});
   }catch(error){
-    if(error instanceof jwt.JsonWebTokenError && error.message == 'jwt malformed'){
-      return res.status(401).json({ error: 'Token JWT inválido ou malformado' });
-    }
-
-    if(error instanceof jwt.JsonWebTokenError){
-      return res.status(401).json({error:`token inválido`})
-    }
-    console.log('error:',error);
-    return res.status(500).json({error:`erro interno do servidor, error: ${error}`});
+    return res.status(500).json({error:`${error}`});
   }
 }
 
-app.post('/produto/:id_product/upload/image/:index_image',authToken, upload.single('imagem'), async (req:any, res:any, next: any) => {
+
+app.get('/comprar/produto/:id_produto',authJWT, async (req:any, res:any, next: any) => {
   try{
     const {id_product,index_image} = req.params;
 
@@ -173,6 +156,9 @@ app.get('/login', async (req, res, next) => {
   const token = user.token;
   res.cookie('authToken', token);
   
+  const payload = jwt.verify(token,process.env.SECRET_KEY||'');
+  console.log(`payload:`,payload);
+
   console.log("/login req.cookies:",req.cookies);
   
   // CODDING: Redirecionamento

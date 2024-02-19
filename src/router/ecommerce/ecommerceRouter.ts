@@ -1,5 +1,6 @@
 import express, { Router } from 'express';
 import { ProdutoModel } from '../../model/produto';
+import User from '../../model/user';
 import mongoose from 'mongoose';
 import { authWithCookie } from '../auth';
 
@@ -7,23 +8,31 @@ const ecommerceRouter: Router = express.Router();
 
 ecommerceRouter.get('/produto/:id',authWithCookie,async (req:any, res:any, next:any)=>{
     try{
-        console.log('@rota /produto/:id req.user:',req.user);
         const {id} = req.params;
 
-        if (!/^[0-9a-fA-F]{24}$/.test(id)) { 
-            return res.status(400).json({ error: 'ObjectID inválido' });
-        }
+        // verificar ObjectID do produto
+        if (!mongoose.Types.ObjectId.isValid(id)) { 
+            return res.status(400).json({ error: 'Indentificação do produto inválida.' });
+        };
 
+        // procurar produto no MongoDB
         const produto = await ProdutoModel.findById(new mongoose.Types.ObjectId(id));
-        if(produto){
-            if(req.user){
-              return res.render('pages/product/product',{produto,user:req.user});
-            }else{
-              return res.render('pages/product/product',{produto});
-            }
-        }else{
-            return res.status(404).json({error: 'produto não encontrado'})
+        if(!produto) return res.status(404).json({error: 'Produto não encontrado.'});
+
+        if(req.user){ // usuário autenticado
+            // procurar usuario no MongoDB
+            const user = await User.findById(new mongoose.Types.ObjectId(req.user.id));
+            req.user.favorite = user.favorite;
+            const favoriteList = user.favorite.map((objectId: mongoose.Types.ObjectId) => objectId.toString());
+            const isFavorite = favoriteList.includes(id); // produto favoritado
+        
+            return res.render('pages/product/product',{produto,isFavorite,user:req.user});
+        }else{ // usuário não autenticado
+            return res.render('pages/product/product',{produto});
         }
+        
+            
+        
     }catch(error){
         return res.status(500).json({error:`${error}`});
     }

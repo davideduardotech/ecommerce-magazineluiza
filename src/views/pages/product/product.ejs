@@ -28,7 +28,53 @@
           
         </div>
         
-        <div id="popup-container" class="fixed w-screen h-screen bg-black bg-opacity-10 z-10 flex flex-row justify-center items-center">
+        <!-- CODDING: Popup excluir imagem -->
+        <div id="popup-remove-image-container" class="hidden fixed w-screen h-screen bg-black bg-opacity-10 z-10 flex flex-row justify-center items-center">
+            <div class="w-[90%] sm:w-[70%] lg:w-[50%] bg-white rounded-[10px] relative flex flex-col items-center py-[32px] space-y-[10px] border-b-[5px] border-azul">
+                <!-- CODDING: Imagem prévia -->
+                <div id="popup-remove-image-preview-container" class="w-[80%] h-[200px] flex flex-row justify-center items-center">
+                    
+                        <img id="popup-remove-image-preview-element" src="" class="w-auto h-auto max-w-full max-h-full border-[1px] border-[#e5e5e5] p-[8px] rounded-[10px]" alt="">
+                </div>
+
+                <!-- CODDING: Texto -->
+                <div class="w-[80%] h-auto flex flex-row justify-center items-center">
+                    <h1 class="text-[#404040] text-lg sm:text-xl">Você quer remover a imagem mesmo?</h1>
+                </div>
+
+                <!-- CODDING: Botões -->
+                <div class="w-[80%] h-auto flex flex-row justify-center items-start space-x-[10px] ">
+                    <button id="popup-remove-image-button-cancelar" class="flex-1 h-[40px] sm:h-[50px] rounded-[10px] border-2 border-[#e5e5e5] text-azul text-sm sm:text-base">Cancelar</button>
+                    <button id="popup-remove-image-button-remove" class="flex-1 h-[40px] sm:h-[50px] rounded-[10px] bg-[#F05455] text-white text-sm sm:text-base">
+                        <!-- CODDING: Loading -->
+                        <div id="popup-remove-image-button-remove-loading"  class="hidden flex flex-row justify-center items-center">
+                            <svg class="text-gray-300 animate-spin" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+                                <path
+                                d="M32 3C35.8083 3 39.5794 3.75011 43.0978 5.20749C46.6163 6.66488 49.8132 8.80101 52.5061 11.4939C55.199 14.1868 57.3351 17.3837 58.7925 20.9022C60.2499 24.4206 61 28.1917 61 32C61 35.8083 60.2499 39.5794 58.7925 43.0978C57.3351 46.6163 55.199 49.8132 52.5061 52.5061C49.8132 55.199 46.6163 57.3351 43.0978 58.7925C39.5794 60.2499 35.8083 61 32 61C28.1917 61 24.4206 60.2499 20.9022 58.7925C17.3837 57.3351 14.1868 55.199 11.4939 52.5061C8.801 49.8132 6.66487 46.6163 5.20749 43.0978C3.7501 39.5794 3 35.8083 3 32C3 28.1917 3.75011 24.4206 5.2075 20.9022C6.66489 17.3837 8.80101 14.1868 11.4939 11.4939C14.1868 8.80099 17.3838 6.66487 20.9022 5.20749C24.4206 3.7501 28.1917 3 32 3L32 3Z"
+                                stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="text-[#F05455]" ></path>
+                                <path
+                                d="M32 3C36.5778 3 41.0906 4.08374 45.1692 6.16256C49.2477 8.24138 52.7762 11.2562 55.466 14.9605C58.1558 18.6647 59.9304 22.9531 60.6448 27.4748C61.3591 31.9965 60.9928 36.6232 59.5759 40.9762"
+                                stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <!-- CODDING: Text -->
+                        <div id="popup-remove-image-button-remove-text" class="flex flex-row justify-center items-center"><i class="fa-solid fa-trash pr-[10px]"></i>Sim, Remover!</div>
+                    </button>
+                </div>
+
+                <!-- CODDING:  Fechar -->
+                <div id="popup-remove-image-close" class="absolute top-[10px] right-[10px] w-[50px] h-[50px] rounded-[10px] bg-azul flex flex-row justify-center items-center cursor-pointer">
+                    <i class="fa-solid fa-xmark text-white text-xl"></i>
+                </div>
+
+                
+            </div>
+        </div>
+
+        <!-- CODDING: Popup upload de imagem -->
+        <div id="popup-upload-image-container" class="hidden fixed w-screen h-screen bg-black bg-opacity-10 z-10 flex flex-row justify-center items-center">
             
             <!-- CODDING: Popup -->
             <div class="w-[90%] sm:w-[70%] lg:w-[50%] bg-white rounded-[10px] relative py-[16px] sm:py-[24px] md:py-[32px] border-b-[5px] border-azul">
@@ -42,6 +88,7 @@
                             <p class="text-lg  font-bold text-azul text-center">Clique para fazer upload de imagem</p>
                             <p class="text-base  text-azul text-center">SVG, PNG, JPEG, WEBP (800x400)</p>
                         </div>
+                        
                     </label>
                     
                     <!-- CODDING: Input padrão-->
@@ -56,7 +103,7 @@
                 <!-- CODDING: previa da imagem-->
                 <div id="popup-image-preview-container" class="hidden w-full h-[200px] flex flex-row justify-center items-center mb-[16px] sm:mb-[24px] md:mb-[32px]">
                     <div class="w-[80%] h-[200px] flex flex-row justify-center items-center">
-                        <img id="popup-image-preview" src="/img/image01.webp" class="max-w-full max-h-full">
+                        <img id="popup-image-preview" src="" class="max-w-full max-h-full">
                     </div>
                 </div>
 
@@ -84,7 +131,22 @@
                 <div id="popup-buttons-container" class="hidden w-full flex flex-row justify-center items-center">
                     <div class="w-[80%] flex flex-row justify-center items-center space-x-[5px]">
                         <button id="popup-button-back" class="h-[50px] flex-grow bg-transparent text-base text-azul border-2 border-azul rounded-[10px]">Voltar</button>
-                        <button id="popup-button-upload" class="h-[50px] flex-grow px-[8px] bg-azul text-base text-white rounded-[10px]"><i class="fa-solid fa-cloud-arrow-up mr-[10px]"></i>Fazer Upload</button>
+                        <button id="popup-button-upload" class="h-[50px] flex-grow px-[8px] bg-azul text-base text-white rounded-[10px]">
+                            <!-- Spinner -->
+                            <div id="popup-button-upload-loading" class="hidden flex flex-row justify-center items-center">
+                                <svg class="text-gray-300 animate-spin" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+                                    <path
+                                    d="M32 3C35.8083 3 39.5794 3.75011 43.0978 5.20749C46.6163 6.66488 49.8132 8.80101 52.5061 11.4939C55.199 14.1868 57.3351 17.3837 58.7925 20.9022C60.2499 24.4206 61 28.1917 61 32C61 35.8083 60.2499 39.5794 58.7925 43.0978C57.3351 46.6163 55.199 49.8132 52.5061 52.5061C49.8132 55.199 46.6163 57.3351 43.0978 58.7925C39.5794 60.2499 35.8083 61 32 61C28.1917 61 24.4206 60.2499 20.9022 58.7925C17.3837 57.3351 14.1868 55.199 11.4939 52.5061C8.801 49.8132 6.66487 46.6163 5.20749 43.0978C3.7501 39.5794 3 35.8083 3 32C3 28.1917 3.75011 24.4206 5.2075 20.9022C6.66489 17.3837 8.80101 14.1868 11.4939 11.4939C14.1868 8.80099 17.3838 6.66487 20.9022 5.20749C24.4206 3.7501 28.1917 3 32 3L32 3Z"
+                                    stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="text-azul" ></path>
+                                    <path
+                                    d="M32 3C36.5778 3 41.0906 4.08374 45.1692 6.16256C49.2477 8.24138 52.7762 11.2562 55.466 14.9605C58.1558 18.6647 59.9304 22.9531 60.6448 27.4748C61.3591 31.9965 60.9928 36.6232 59.5759 40.9762"
+                                    stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                                    </path>
+                                </svg>
+                            </div>
+
+                            <div id="popup-button-upload-icon-with-text" class="flex flex-row justify-center items-center"><i class="fa-solid fa-cloud-arrow-up mr-[10px]"></i>
+                            Fazer Upload<div></button>
                     </div>
                 </div>
 
@@ -92,21 +154,21 @@
             
         </div>
 
-        <!-- navbar -->
+        <!-- CODDING: navbar -->
         <%- include('../../partials/navbar.ejs') %>
 
 
         
-        <!-- Produto -->
+        <!-- CODDING: Produto -->
         <div class="w-full my-[32px] flex flex-row justify-center">
             <div class="w-[90%] bg-white rounded-[10px] shadow-[0_8px_24px_rgba(149,157,165,0.2)] space-y-[10px]">
                 <!-- CODDING: Titulo -->
-                <div class="w-full flex flex-col py-[16px] sm:py-[24px] md:py-[32px] px-[16px]">
+                <div class="w-full flex flex-col py-[16px] sm:py-[24px] md:py-[32px] px-[32px]">
                     <h1 class="text-xl sm:text-2xl  font-medium text-[#404040]"><%= produto.name %></h1>
                     <p class="text-base sm:text-lg text-[#404040]">Código <%= produto._id %></p>
                 </div>
 
-                <div class="flex flex-row justify-center flex-wrap sm:flex-wrap md:flex-nowrap px-[16px]">
+                <div class="flex flex-row justify-center flex-wrap sm:flex-wrap md:flex-nowrap px-[32px]">
                     <!-- CODDING: imagens do produto -->
                     <div class="flex-grow  flex flex-row justify-center items-start max-h-[510px] space-x-[10px]">
                         <!-- CODDING: 4 imagens -->
@@ -114,40 +176,149 @@
                             <div id="product-image-01" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-azul p-[8px] flex flex-row justify-center items-center relative">
                                 <img src="<%= produto.image[0].url %>" alt="">
                                 <% if(typeof user !== 'undefined' && user.isAdmin) { %>
-                                    
-                                    <% if(produto.image[0].url === "/img/default/product_default.png") { %>
-                                        <!-- CODDING: Adicionar imagem -->
-                                        <div id="add-image-01" class="flex flex-row items-center absolute left-[100px] bottom-[10px] space-x-[10px] cursor-pointer transition-transform duration-500 hover:scale-105">
+                                        <!-- CODDING: Adicionar imagem  -->
+                                        <div id="button-add-image-01" class="<%= produto.image[0].url === '/img/default/product_default.png' ? '':'hidden'%> flex flex-row items-center absolute left-[100px] bottom-[10px] rounded-full cursor-pointer transition-transform duration-500 hover:scale-105 bg-white shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
                                             <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
                                                 <i class="fa-solid fa-plus text-sm text-white"></i>
                                             </div>
-                                            <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap">Adicionar Imagem</p>
+                                            <div class="min-h-[40px] flex flex-row justify-start items-center px-[10px] flex-grow">
+                                                <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap pr-[10px]">Adicionar Imagem</p>
+                                            </div>
                                         </div>
-                                    <% } else { %>
-                                        <div class="flex flex-col space-y-[10px] absolute left-[100px] bottom-[10px]">
+                                    
+                                        <div id="button-remove-and-update-01" class="<%= produto.image[0].url === '/img/default/product_default.png' ? 'hidden':''%> flex flex-col space-y-[10px] absolute left-[100px] bottom-[10px]">
                                             <!-- CODDING: Remover imagem -->
-                                            <div class="flex flex-row items-center space-x-[10px] transition-transform duration-500 hover:scale-105 cursor-pointer">
-                                                <div class="min-w-[40px] min-h-[40px] rounded-full bg-[#F54655] flex flex-row justify-center items-center">
+                                            <div id="button-remove-image-01" class="flex flex-row items-center transition-transform duration-500 hover:scale-105 cursor-pointer bg-white rounded-full shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
+                                                <div class="min-w-[40px] min-h-[40px] rounded-full bg-[#F05455] flex flex-row justify-center items-center">
                                                     <i class="fa-solid fa-trash text-sm text-white"></i>
                                                 </div>
-                                                <p class="text-[#404040] text-sm sm:text-base whitespace-nowrap">Remover Imagem</p>
+                                                <div class="bg-transparent min-h-[40px] flex flex-row justify-start items-center px-[10px] rounded-tr-[10px] rounded-br-[10px]">
+                                                    <p class="text-[#404040] text-sm sm:text-base whitespace-nowrap">Remover Imagem</p>
+                                                </div>
                                             </div>
     
                                             <!-- CODDING: Alterar imagem -->
-                                            <div class="flex flex-row items-center space-x-[10px] cursor-pointer transition-transform duration-500 hover:scale-105">
+                                            <div id="button-update-image-01" class="flex flex-row items-center cursor-pointer transition-transform duration-500 hover:scale-105 bg-white rounded-full shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
                                                 <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
                                                     <i class="fa-solid fa-image text-sm text-white"></i>
                                                 </div>
-                                                <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap">Alterar Imagem</p>
+                                                <div class="min-h-[40px] flex flex-row justify-start items-center flex-grow px-[10px] rounded-tr-[10px] rounded-br-[10px] bg-transparent">
+                                                    <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap">Alterar Imagem</p>
+                                                </div>
+                                            </div> 
+                                        </div>
+
+                                    
+                                <% } %>
+                            </div>
+                            <div id="product-image-02" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center relative">
+                                <img src="<%= produto.image[1].url %>" alt="">
+                                <% if(typeof user !== 'undefined' && user.isAdmin) { %>
+                                    <!-- CODDING: Adicionar imagem  -->
+                                    <div id="button-add-image-02" class="<%= produto.image[1].url === '/img/default/product_default.png' ? '':'hidden'%> flex flex-row items-center absolute left-[100px] bottom-[10px] rounded-full cursor-pointer transition-transform duration-500 hover:scale-105 bg-white shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
+                                        <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
+                                            <i class="fa-solid fa-plus text-sm text-white"></i>
+                                        </div>
+                                        <div class="min-h-[40px] flex flex-row justify-start items-center px-[10px] flex-grow">
+                                            <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap pr-[10px]">Adicionar Imagem</p>
+                                        </div>
+                                    </div>
+                                
+                                    <div id="button-remove-and-update-02" class="<%= produto.image[1].url === '/img/default/product_default.png' ? 'hidden':''%> flex flex-col space-y-[10px] absolute left-[100px] bottom-[10px]">
+                                        <!-- CODDING: Remover imagem -->
+                                        <div id="button-remove-image-02" class="flex flex-row items-center transition-transform duration-500 hover:scale-105 cursor-pointer bg-white rounded-full shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
+                                            <div class="min-w-[40px] min-h-[40px] rounded-full bg-[#F05455] flex flex-row justify-center items-center">
+                                                <i class="fa-solid fa-trash text-sm text-white"></i>
+                                            </div>
+                                            <div class="bg-transparent min-h-[40px] flex flex-row justify-start items-center px-[10px] rounded-tr-[10px] rounded-br-[10px]">
+                                                <p class="text-[#404040] text-sm sm:text-base whitespace-nowrap">Remover Imagem</p>
                                             </div>
                                         </div>
 
-                                    <% } %>
+                                        <!-- CODDING: Alterar imagem -->
+                                        <div id="button-update-image-02" class="flex flex-row items-center cursor-pointer transition-transform duration-500 hover:scale-105 bg-white rounded-full shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
+                                            <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
+                                                <i class="fa-solid fa-image text-sm text-white"></i>
+                                            </div>
+                                            <div class="min-h-[40px] flex flex-row justify-start items-center flex-grow px-[10px] rounded-tr-[10px] rounded-br-[10px] bg-transparent">
+                                                <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap">Alterar Imagem</p>
+                                            </div>
+                                        </div> 
+                                    </div>
                                 <% } %>
                             </div>
-                            <div id="product-image-02" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[1].url %>" alt=""></div>
-                            <div id="product-image-03" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[2].url %>" alt=""></div>
-                            <div id="product-image-04" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center"><img src="<%= produto.image[3].url %>" alt=""></div>
+                            <div id="product-image-03" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center relative">
+                                <img src="<%= produto.image[2].url %>" alt="">
+                                <% if(typeof user !== 'undefined' && user.isAdmin) { %>
+                                    <!-- CODDING: Adicionar imagem  -->
+                                    <div id="button-add-image-03" class="<%= produto.image[2].url === '/img/default/product_default.png' ? '':'hidden'%> flex flex-row items-center absolute left-[100px] bottom-[10px] rounded-full cursor-pointer transition-transform duration-500 hover:scale-105 bg-white shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
+                                        <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
+                                            <i class="fa-solid fa-plus text-sm text-white"></i>
+                                        </div>
+                                        <div class="min-h-[40px] flex flex-row justify-start items-center px-[10px] flex-grow">
+                                            <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap pr-[10px]">Adicionar Imagem</p>
+                                        </div>
+                                    </div>
+                                
+                                    <div id="button-remove-and-update-03" class="<%= produto.image[2].url === '/img/default/product_default.png' ? 'hidden':''%> flex flex-col space-y-[10px] absolute left-[100px] bottom-[10px]">
+                                        <!-- CODDING: Remover imagem -->
+                                        <div id="button-remove-image-03" class="flex flex-row items-center transition-transform duration-500 hover:scale-105 cursor-pointer bg-white rounded-full shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
+                                            <div class="min-w-[40px] min-h-[40px] rounded-full bg-[#F05455] flex flex-row justify-center items-center">
+                                                <i class="fa-solid fa-trash text-sm text-white"></i>
+                                            </div>
+                                            <div class="bg-transparent min-h-[40px] flex flex-row justify-start items-center px-[10px] rounded-tr-[10px] rounded-br-[10px]">
+                                                <p class="text-[#404040] text-sm sm:text-base whitespace-nowrap">Remover Imagem</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- CODDING: Alterar imagem -->
+                                        <div id="button-update-image-03" class="flex flex-row items-center cursor-pointer transition-transform duration-500 hover:scale-105 bg-white rounded-full shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
+                                            <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
+                                                <i class="fa-solid fa-image text-sm text-white"></i>
+                                            </div>
+                                            <div class="min-h-[40px] flex flex-row justify-start items-center flex-grow px-[10px] rounded-tr-[10px] rounded-br-[10px] bg-transparent">
+                                                <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap">Alterar Imagem</p>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div id="product-image-04" class="w-[120px] h-[120px] rounded-[10px] bg-white border-[1px] border-[#e5e5e5] p-[8px] flex flex-row justify-center items-center relative">
+                                <img src="<%= produto.image[3].url %>" alt="">
+                                <% if(typeof user !== 'undefined' && user.isAdmin) { %>
+                                    <!-- CODDING: Adicionar imagem  -->
+                                    <div id="button-add-image-04" class="<%= produto.image[3].url === '/img/default/product_default.png' ? '':'hidden'%> flex flex-row items-center absolute left-[100px] bottom-[10px] rounded-full cursor-pointer transition-transform duration-500 hover:scale-105 bg-white shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
+                                        <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
+                                            <i class="fa-solid fa-plus text-sm text-white"></i>
+                                        </div>
+                                        <div class="min-h-[40px] flex flex-row justify-start items-center px-[10px] flex-grow">
+                                            <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap pr-[10px]">Adicionar Imagem</p>
+                                        </div>
+                                    </div>
+                                
+                                    <div id="button-remove-and-update-04" class="<%= produto.image[3].url === '/img/default/product_default.png' ? 'hidden':''%> flex flex-col space-y-[10px] absolute left-[100px] bottom-[10px]">
+                                        <!-- CODDING: Remover imagem -->
+                                        <div id="button-remove-image-04" class="flex flex-row items-center transition-transform duration-500 hover:scale-105 cursor-pointer bg-white rounded-full shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
+                                            <div class="min-w-[40px] min-h-[40px] rounded-full bg-[#F05455] flex flex-row justify-center items-center">
+                                                <i class="fa-solid fa-trash text-sm text-white"></i>
+                                            </div>
+                                            <div class="bg-transparent min-h-[40px] flex flex-row justify-start items-center px-[10px] rounded-tr-[10px] rounded-br-[10px]">
+                                                <p class="text-[#404040] text-sm sm:text-base whitespace-nowrap">Remover Imagem</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- CODDING: Alterar imagem -->
+                                        <div id="button-update-image-04" class="flex flex-row items-center cursor-pointer transition-transform duration-500 hover:scale-105 bg-white rounded-full shadow-[0_2px_8px_0_rgba(99,99,99,0.2)]">
+                                            <div class="min-w-[40px] min-h-[40px] rounded-full bg-azul flex flex-row justify-center items-center">
+                                                <i class="fa-solid fa-image text-sm text-white"></i>
+                                            </div>
+                                            <div class="min-h-[40px] flex flex-row justify-start items-center flex-grow px-[10px] rounded-tr-[10px] rounded-br-[10px] bg-transparent">
+                                                <p class="text-[#404040] text-sm sm:text-base inline-block whitespace-nowrap">Alterar Imagem</p>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                <% } %>
+                            </div>
                         </div>
 
                         <!-- CODDING: previa imagem -->
@@ -173,8 +344,24 @@
 
                                 <!-- CODDING: Favoritar e compartilhar -->
                                 <div class="flex flex-row items-center space-x-[15px]">
-                                    <i class="fa-regular fa-heart text-azul text-2xl transition-transform duration-500 hover:scale-105"></i>
-                                    <i class="fa-solid fa-share-nodes text-azul text-2xl transition-transform duration-500 hover:scale-105"></i>
+                                    <div class="">
+                                        <!-- CODDING: Loading -->
+                                        <div id="icon-favorite-loading" class="hidden flex flex-row justify-center items-center">
+                                            <svg class="text-gray-300 animate-spin" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+                                                <path
+                                                d="M32 3C35.8083 3 39.5794 3.75011 43.0978 5.20749C46.6163 6.66488 49.8132 8.80101 52.5061 11.4939C55.199 14.1868 57.3351 17.3837 58.7925 20.9022C60.2499 24.4206 61 28.1917 61 32C61 35.8083 60.2499 39.5794 58.7925 43.0978C57.3351 46.6163 55.199 49.8132 52.5061 52.5061C49.8132 55.199 46.6163 57.3351 43.0978 58.7925C39.5794 60.2499 35.8083 61 32 61C28.1917 61 24.4206 60.2499 20.9022 58.7925C17.3837 57.3351 14.1868 55.199 11.4939 52.5061C8.801 49.8132 6.66487 46.6163 5.20749 43.0978C3.7501 39.5794 3 35.8083 3 32C3 28.1917 3.75011 24.4206 5.2075 20.9022C6.66489 17.3837 8.80101 14.1868 11.4939 11.4939C14.1868 8.80099 17.3838 6.66487 20.9022 5.20749C24.4206 3.7501 28.1917 3 32 3L32 3Z"
+                                                stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="text-white" ></path>
+                                                <path
+                                                d="M32 3C36.5778 3 41.0906 4.08374 45.1692 6.16256C49.2477 8.24138 52.7762 11.2562 55.466 14.9605C58.1558 18.6647 59.9304 22.9531 60.6448 27.4748C61.3591 31.9965 60.9928 36.6232 59.5759 40.9762"
+                                                stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class="text-azul">
+                                                </path>
+                                            </svg>
+                                        </div>
+
+                                        <!-- CODDING: Icone -->
+                                        <i id="icon-favorite" icon-favorite-data="<%= typeof isFavorite !== 'undefined' ? isFavorite : '' %>" class="<%= typeof isFavorite !== 'undefined' && isFavorite ? 'fa-solid fa-heart' :  'fa-regular fa-heart' %> text-azul text-2xl transition-transform duration-500 hover:scale-105 cursor-pointer"></i>
+                                    </div>
+                                    <i id="icon-share" class="fa-solid fa-share-nodes text-azul text-2xl transition-transform duration-500 hover:scale-105"></i>
                                 </div>
                             </div>
 
@@ -207,7 +394,7 @@
                             <!-- CODDING: Botão de comprar e adicionar na sacola -->
                             <div class="flex flex-col space-y-[5px]">
                                 <button class="w-full h-[50px] sm:h-[55px] md:h-[60px] rounded-[10px] bg-azul text-base font-bold text-white"><i class="fa-solid fa-cart-shopping mr-[5px]"></i> COMPRAR</button>
-                                <button class="w-full h-[50px] sm:h-[55px] md:h-[60px] rounded-[10px] bg-transparent text-azul border-2 border-azul text-base font-bold"><i class="fa-solid fa-bag-shopping mr-[5px]"></i> ADICIONAR A SACOLA</button>
+                                <button class="w-full h-[50px] sm:h-[55px] md:h-[60px] rounded-[10px] bg-transparent text-azul border-2 border-azul text-base font-bold px-[8px]"><i class="fa-solid fa-bag-shopping mr-[5px]"></i> ADICIONAR A SACOLA</button>
                             </div>
                         </div>
                     </div>

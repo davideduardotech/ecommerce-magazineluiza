@@ -1,7 +1,7 @@
 import { ProdutoModel } from '../model/produto';
 import User from '../model/user';
 import { validationResult } from 'express-validator';
-import mongoose, { Mongoose } from 'mongoose';
+import mongoose, { Mongoose, mongo } from 'mongoose';
 import fs from 'fs';
 import path from 'path';
 
@@ -31,7 +31,8 @@ export const criarProduto = async (req: any, res:any, next:any) =>{
     }
 }
 
-export const uploadImage = async (req: any, res: any, next: any) => {
+// CODDING: Upload de imagem
+export const uploadImage = async (req: any, res:any, next: any) => {
     try{
         const {id_produto, index_imagem} = req.params; 
 
@@ -95,11 +96,128 @@ export const uploadImage = async (req: any, res: any, next: any) => {
     }
 }
 
+// CODDING: Deletar imagem
+export const deleteImage = async (req:any, res:any, next:any)=>{
+    let {id_produto, image_index} = req.params;
+
+    // verificar id do produto
+    if(!mongoose.Types.ObjectId.isValid(id_produto)) return res.status(401).json({error:'indentificação do produto inválido'});
+
+    // verificar index da imagem
+    try{
+        image_index = parseInt(image_index);
+        if(image_index > 3) return res.status(401).json({error:`index da imagem inválido`});
+    }catch(error){
+        return res.status(401).json({error:'index da imagem inválido'});
+    }
+
+    // buscar usuario no MongoDB
+    const user = await User.findById(new mongoose.Types.ObjectId(req.user.id));
+    if(!user) return res.status(404).json({error:`usuário não encontrado`});
+
+    // buscar produto no MongoDB
+    const produto:any = await ProdutoModel.findById(new mongoose.Types.ObjectId(id_produto));
+    if(!produto) return res.status(404).json({ error: 'produto não encontrado' });
+
+    if(produto.image[image_index].url !== '/img/default/product_default.png'){
+        // imagem antiga
+        const imagemAntiga = produto.image[image_index].url;
+
+        // alterar imagem pra "product_default.png" no MongoDB
+        try{
+            const updateProduct = await ProdutoModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id_produto),{[`image.${image_index}.url`]: '/img/default/product_default.png'},{new: true});
+        }catch(error){
+            return res.status(500).json({error:`ocorreu um erro`})
+        }
+
+        // excluir imagem
+        try{
+            await fs.promises.unlink(path.join(__dirname, `../public${imagemAntiga}`));
+        }catch(error){
+            console.log('ocorreu um erro ao tentar excluir imagem')
+        }
+
+        return res.status(200).json({message: `imagem "${imagemAntiga.split('/').pop()}" excluida com sucesso`});
+    }else{
+        return res.status(401).json({message: `não é possivel excluir a imagem padrão.`});
+    }
+    
+}
+
+// CODDING: Favoritar produto
+export const favoriteProduto = async (req:any, res:any, next: any)=>{
+    try{
+        const {id_produto} = req.params;
+
+        // verificar ObjectID do produto
+        if(!mongoose.Types.ObjectId.isValid(id_produto)) return res.status(401).json({error: 'Identificação do produto inválida.'});
+
+        // buscar produto no MongoDB
+        const produto = await ProdutoModel.findById(new mongoose.Types.ObjectId(id_produto));
+        if(!produto) return res.status(404).json({error:`Produto não encontrado.`});
+
+        // buscar usuario no MongoDB
+        const user = User.findById(new mongoose.Types.ObjectId(req.user.id));
+        if(!user) return res.status(404).json({error:'Usuário não encontrado.'});
+
+        // verificar se produto já está na lista de favoritos
+        const userFound = await User.findOne({
+            _id: new mongoose.Types.ObjectId(req.user.id), 
+            favorite: {$in:[new mongoose.Types.ObjectId(id_produto)]}
+        });
+        if(userFound) return res.status(401).json({error:`Produto já está na sua lista de favoritos.`});
+
+        // adicionar produto na lista de favoritos
+        const userUpdate = await User.findByIdAndUpdate(
+            new mongoose.Types.ObjectId(req.user.id),
+            { $push: { favorite: new mongoose.Types.ObjectId(id_produto) } },
+            { new: true }
+        );    
+        
+        return res.status(200).json({message:`Produto adicionado à sua lista de favoritos.`});
+    }catch(error){
+        return res.status(500).json({error:`Ocorreu um erro inesperado no servidor. Tente novamente mais tarde.`});
+    }
+    
+}
+
+// CODDING: Desfavoritar produto
+export const unFavoriteProduto = async (req:any, res:any, next:any) => {
+    try{
+        const {id_produto} = req.params;
+    
+        // verificar ObjectID do produto
+        if(!mongoose.Types.ObjectId.isValid(id_produto)) return res.status(400).json({error:`Indentificação do produto inválida.`});
+
+        // procurar produto no MongoDB
+        const produto = await ProdutoModel.findById(new mongoose.Types.ObjectId(id_produto));
+        if(!produto) return res.status(404).json({error:`Produto não encontrado.`});
+
+        // procurar usuario no MongoDB
+        const user = await User.findById(new mongoose.Types.ObjectId(req.user.id));
+        if(!user) return res.status(404).json({error: `Usuário não encontrado.`});
+
+        // verifica se produto está na lista de favorito do usuario
+        const userFound = await User.findOne({_id: new mongoose.Types.ObjectId(req.user.id), favorite: {$in:[new mongoose.Types.ObjectId(id_produto)]}});
+        if(userFound){ // remover da lista de favoritos
+            const userUpdate = await User.findByIdAndUpdate(new mongoose.Types.ObjectId(req.user.id),{$pull:{favorite: new mongoose.Types.ObjectId(id_produto)}},{new: true});
+            return res.status(200).json({message:`Produto removido da lista de favoritos.`});
+            
+        }else{
+            return res.status(400).json({error:`produto não encontrado na sua lista de favorito`});
+        }
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({error:`ocorreu um erro inesperado no servidor, tente novamente mais tarde`});
+    }
+
+}
+
 export const deletarProduto = async (req: any, res:any, next: any): Promise<void> =>{
 
 }
 
-export const searchProduto = async (req: any, res: any, next: any) => {
+export const searchProduto = async (req: any, res:any, next: any) => {
     try{
         let {limit} = req.query;
         
