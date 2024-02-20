@@ -1,15 +1,213 @@
 <html>
     <head>
-        <title><%= title || 'Comprar' %></title>
+        <title><%= typeof title !== 'undefined' ? title : 'Comprar' %></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <%- include('../../partials/head/googlefonts.ejs') %>
         <%- include('../../partials/head/tailwindcss.ejs') %>
         <%- include('../../partials/head/fontawesome.ejs') %>
+
+        <link rel="stylesheet" href="/css/scrollbar.css">
     </head>
-    <body>
+    <body class="bg-[#F4F4F4]">
         <!-- CODDING: Barra de navegação -->
-        <nav class="h-[]">
-            comprar produto
+        <nav class="w-full bg-azul flex flex-col justify-center items-center">
+            <div class="w-[300px] h-[60px] flex flex-row items-center justify-center my-[16px]">
+                <img src="/img/logo/logo.png" alt="" class="w-auto h-auto max-w-full max-h-full">
+            </div>
+            <hr class="w-full h-[5px]  bg-gradient-to-r from-[#FECB08] via-[#D039F2] to-[#1BDE1E] border-none">
         </nav>
+
+        <!-- CODDING: Stepper -->
+        <div class="w-full py-[64px] flex flex-row justify-center items-center">
+            
+            <ol class="items-center sm:w-auto sm:mx-[16px] space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
+                <li class="flex items-center text-blue-600 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
+                    <span class="flex items-center justify-center w-[48px] h-[48px] bg-azul text-white rounded-full shrink-0 dark:border-blue-500">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <span>
+                        <h3 class="font-medium leading-tight text-azul">Indentificação</h3>
+                        <p class="text-sm text-azul">Adicione seu endereço</p>
+                    </span>
+                </li>
+                <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                    <span class="flex items-center justify-center w-[48px] h-[48px] border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </span>
+                    <span>
+                        <h3 class="font-medium leading-tight">Realizar pagamento</h3>
+                        <p class="text-sm">Pix, Cartão de Crédito, Boleto</p>
+                    </span>
+                </li>
+                <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                    <span class="flex items-center justify-center w-[48px] h-[48px] border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                        <i class="fa-solid fa-truck"></i>
+                    </span>
+                    <span>
+                        <h3 class="font-medium leading-tight">Acompanhar Pedido</h3>
+                        <p class="text-sm">da loja até sua casa</p>
+                    </span>
+                </li>
+            </ol>
+
+
+        </div>
+
+        <div class="w-full flex flex-col md:flex-row space-y-[32px] mb-[64px] md:space-y-0">
+            
+            <!-- CODDING: Formulários -->
+            <div class=" flex-1 md:flex-none w-full md:w-[60%] flex flex-row justify-center items-start">
+                <div class="w-[90%] bg-white shadow-[0_8px_24px_rgba(149,157,165,0.2)] rounded-[10px] py-[32px] px-[32px] grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <div class="flex flex-row justify-start items-center space-x-[10px]">
+                            <div class="rounded-full bg-azul w-[50px] h-[50px] flex flex-row justify-center items-center">
+                                <i class="fa-solid fa-user text-white"></i>
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <h1 class="text-base/none sm:text-lg/none font-semibold text-azul">Informações Pessoais</h1>
+                                <p class="text-sm sm:text-base text-azul">Preencha essas informações para continuar</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CODDING: Nome, Sobrenone, Email e Telefone -->
+                    <div class="col-span-1">
+                      <label for="nome" class="text-sm">Nome</label>
+                      <input type="text" placeholder="Nome" value="<%= typeof user !== 'undefined' && typeof user.nome !== 'undefined' ? user.nome :'' %>" id="nome" name="nome" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                    </div>
+                    <div class="col-span-1">
+                      <label for="email" class="text-sm">Sobrenome</label>
+                      <input type="text" id="sobrenome" value="<%= typeof user !== 'undefined' && typeof user.sobrenome !== 'undefined' ? user.sobrenome : '' %>" placeholder="Sobrenome" name="sobrenome" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                    </div>
+                    <div class="col-span-1">
+                        <label for="email" class="text-sm">Email</label>
+                        <input type="email" id="email" placeholder="Email" name="email" value="<%= typeof user !== 'undefined' && typeof user.email !== 'undefined' ? user.email : '' %>" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                    </div>
+                    <div class="col-span-1">
+                        <label for="email" class="text-sm">Telefone</label>
+                        <input type="text" id="telefone" name="telefone" value="<%= typeof user !== 'undefined' && typeof user.telefone !== 'undefined' ? user.telefone : '' %>" placeholder="Telefone" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                    </div>    
+                    
+                    <!-- CODDING: Botão continuar -->
+                    <div class="col-span-2">
+                        
+                        <button class="w-full h-[50px] rounded-[5px] bg-azul text-sm font-bold text-white">CONTINUAR</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CODDING: Detalhes -->
+            <div class="flex-1 md:flex-none w-full md:w-[40%] flex flex-row justify-center items-start">
+                <div class="w-[90%] md:w-full bg-white shadow-[0_8px_24px_rgba(149,157,165,0.2)] rounded-[10px] mr-[0px] md:mr-[32px] flex flex-col items-center space-y-[20px]">
+                        
+                        <!-- CODDING: Texto minha sacola -->
+                        <div class="pt-[32px] px-[32px] w-full flex flex-row justify-start items-center">
+                            <div class="flex flex-row justify-start items-center space-x-[10px]">
+                                <div class="rounded-full bg-azul w-[50px] h-[50px] flex flex-row justify-center items-center">
+                                    <i class="fa-solid fa-bag-shopping text-white"></i>
+                                </div>
+                                <div class="flex flex-col items-start">
+                                    <h1 class="text-base/none sm:text-lg/none font-semibold text-azul">Minha Sacola</h1>
+                                    <p class="text-sm sm:text-base text-azul">Meus produtos escolhido para comprar</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- CODDING: Tabela -->
+                        <div id="table" class="px-[32px] w-full overflow-x-auto overflow-y-auto max-h-[400px]">
+                            <table class="">
+                                <thead class="text-[#404040]">
+                                    <tr>
+                                        <th class="text-sm font-bold"></th>
+                                        <th class="text-sm font-bold"></th>
+                                        <th class="text-sm px-[16px] rounded-[5px] ">Quantidade</th>
+                                        <th class="text-sm px-[16px] rounded-[5px] ">Uni.</th>
+                                        <th class="text-sm px-[16px] rounded-[5px] ">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="produtos">
+                                    <!-- CODDING: Produto 01 -->
+                                    <tr class="border-b-[1px] border-[#e5e5e5]" produto-id-data="<%= typeof produto !== 'undefined' ? produto._id : '' %>">
+                                        <td class="py-[10px] min-w-[90px] max-w-[120px] min-h-[90px] max-h-[120px]"><img src="<%= typeof produto !== 'undefined' ? produto.image[0].url : '' %>" class="w-auto h-auto max-w-full max-h-full" alt=""> </td>
+                                        <td class="py-[10px] text-sm"><%= typeof produto !== 'undefined' && typeof produto.name !== 'undefined' ? produto.name : '' %></td>
+                                        <td class="py-[10px]">
+                                            <div class="w-full flex flex-row justify-center items-center">
+                                                <i class="flex flex-row justify-center items-center fa-solid fa-minus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tl-[5px] rounded-bl-[5px] cursor-pointer"></i>
+                                                <span class="flex flex-row justify-center items-center w-[25px] h-[25px] border border-gray-300 text-sm">1</span>
+                                                <i class="flex flex-row justify-center items-center fa-solid fa-plus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tr-[5px] rounded-br-[5px] cursor-pointer"></i>
+                                            </div>
+                                        </td>
+                                        <td class="py-[10px] text-center text-sm"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
+                                        <td class="py-[10px] text-center text-sm text-azul"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
+                                    </tr>
+
+                                    <!-- CODDING: Produto 02 -->
+                                    <tr class="border-b-[1px] border-[#e5e5e5]" produto-id-data="jahjsdfhjasfhjhfwhefafwefa">
+                                        <td class="py-[10px] min-w-[90px] max-w-[120px] min-h-[90px] max-h-[120px]"><img src="<%= typeof produto !== 'undefined' ? produto.image[0].url : '' %>" class="w-auto h-auto max-w-full max-h-full" alt=""> </td>
+                                        <td class="py-[10px] text-sm"><%= typeof produto !== 'undefined' && typeof produto.name !== 'undefined' ? produto.name : '' %></td>
+                                        <td class="py-[10px]">
+                                            <div class="w-full flex flex-row justify-center items-center">
+                                                <i class="flex flex-row justify-center items-center fa-solid fa-minus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tl-[5px] rounded-bl-[5px] cursor-pointer"></i>
+                                                <span class="flex flex-row justify-center items-center w-[25px] h-[25px] border border-gray-300 text-sm">1</span>
+                                                <i class="flex flex-row justify-center items-center fa-solid fa-plus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tr-[5px] rounded-br-[5px] cursor-pointer"></i>
+                                            </div>
+                                        </td>
+                                        <td class="py-[10px] text-center text-sm"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
+                                        <td class="py-[10px] text-center text-sm text-azul"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
+                                    </tr>
+
+                                    <!-- CODDING: Produto 03 -->
+                                    <tr class="border-b-[1px] border-[#e5e5e5]" produto-id-data="afsjfhasfsfasfafsfawfwfawf">
+                                        <td class="py-[10px] min-w-[90px] max-w-[120px] min-h-[90px] max-h-[120px]"><img src="<%= typeof produto !== 'undefined' ? produto.image[0].url : '' %>" class="w-auto h-auto max-w-full max-h-full" alt=""> </td>
+                                        <td class="py-[10px] text-sm"><%= typeof produto !== 'undefined' && typeof produto.name !== 'undefined' ? produto.name : '' %></td>
+                                        <td class="py-[10px]">
+                                            <div class="w-full flex flex-row justify-center items-center">
+                                                <i class="flex flex-row justify-center items-center fa-solid fa-minus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tl-[5px] rounded-bl-[5px] cursor-pointer"></i>
+                                                <span class="flex flex-row justify-center items-center w-[25px] h-[25px] border border-gray-300 text-sm">1</span>
+                                                <i class="flex flex-row justify-center items-center fa-solid fa-plus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tr-[5px] rounded-br-[5px] cursor-pointer"></i>
+                                            </div>
+                                        </td>
+                                        <td class="py-[10px] text-center text-sm"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
+                                        <td class="py-[10px] text-center text-sm text-azul"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
+                                    </tr>
+
+
+                                    
+
+                                    
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+
+                        <!-- CODDING: Preço(R$) -->
+                        <div class="py-[32px] px-[32px] w-full flex flex-col">
+                            <div class="w-full flex flex-row justify-between items-center">
+                                <p class="text-base">Subtotal</p>
+                                <p class="text-base">R$634</p>
+                            </div>
+
+                            <hr class="h-[1px] bg-gray-300 my-[10px]">
+
+                            <div class="w-full flex flex-row justify-between items-center">
+                                <p class="text-lg font-black">Total</p>
+                                <p class="text-lg font-black">R$634</p>
+                            </div>
+                        </div>
+                        
+                        <!-- CODDING: Botões -->
+                        <div class="hidden w-full">
+                            <button class="w-full h-[50px] rounded-[5px] bg-azul text-sm font-bold text-white">CONTINUAR</button>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- CODDING: Scripts -->
+        <script src="/js/pages/purchase/purchase.js"></script>
     </body>
 </html>

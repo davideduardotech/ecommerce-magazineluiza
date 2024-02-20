@@ -3,7 +3,9 @@ import jwt from 'jsonwebtoken'
 
 const UserSchema = new Schema({
     nome: { type: String, required: true},
+    sobrenome: { type: String, required: true },
     email: { type: String, required: true, unique: true },
+    telefone: { type: String, required: true},
     senha: { type: String, required: true },
     favorite:[{ type: mongoose.Types.ObjectId }],
     isAdmin: {type: Boolean},
@@ -17,6 +19,8 @@ UserSchema.methods.document = function() {
     return {
         id: this._id,
         nome: this.nome,
+        sobrenome: this.sobrenome,
+        telefone: this.telefone,
         favorite:this.favorite,
         isAdmin: this.isAdmin,
         email: this.email,

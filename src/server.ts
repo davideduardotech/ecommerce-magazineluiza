@@ -70,43 +70,37 @@ mongoose.connect(process.env.MONGODB_URI||"", { useNewUrlParser: true, useUnifie
   })
   .catch((error) => console.error('Erro ao conectar ao MongoDB:', error));
 
-function authJWT(req:any, res:any, next:any){
+function authJWTWithCookie(req:any, res:any, next:any){
   try{
-    const token = req.headers.authorization?.split(' ')[1];
-    return res.status(200).json({token});
+    const token = req.cookies.authToken;
+    if(token){
+      const payload = jwt.verify(token,process.env.SECRET_KEY||'');
+      req.user = payload;
+      next();
+    }else{
+      return res.status(401).json({message:`não autorizado, realize login pra acessar essa rota`});
+    }
   }catch(error){
     return res.status(500).json({error:`${error}`});
   }
 }
 
 
-app.get('/comprar/produto/:id_produto',authJWT, async (req:any, res:any, next: any) => {
+app.get('/comprar/produto/:id_produto',authJWTWithCookie, async (req:any, res:any, next: any) => {
   try{
-    const {id_product,index_image} = req.params;
-
-    const produto = await ProdutoModel.findById(new mongoose.Types.ObjectId(id_product));
+    const {id_produto} = req.params;
     
-    const user = await User.findById(new mongoose.Types.ObjectId(req.user.id));
-    if(!user) return res.status(401).json({error:`usuário não encontrado`});
-    console.log(`req.user.id: ${req.user.id}(${typeof(req.user.id)}) | user._id: ${user._id.toString()}(${typeof(user._id.toString())})`);
-    if(req.user.id !== user._id.toString()) return res.status(401).json({error:'você não tem permissão para alterar esse produto'});
-    
-    const file = req.file;
-    const filename = req.file.filename;
-    const url = `/img/uploads/${filename}`;
+    // verificar ObjectID do produto
+    if(!mongoose.Types.ObjectId.isValid(id_produto)) return res.status(401).json({error:`Indentificação do produto inválida.`});
 
-    // CODDING: Update image
-    try{
-      const updateProduct = await ProdutoModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id_product),{[`image.${index_image}.url`]:url},{new:true})
-      console.log(`nova imagem: ${updateProduct}`);
-    }catch(error){
-      console.log('erro ao tentar fazer upload da imagem:',error);
-      return res.status(500).json({error:'erro ao tentar fazer upload da imagem'});
-    }
+    // procurar produto no MongoDB
+    const produtoMongoDB = await ProdutoModel.findById(new mongoose.Types.ObjectId(id_produto));
+    if(!produtoMongoDB) return res.status(404).json({error:`produto não encontrado`});
+
+    console.log(`produtoMongoDB:`,produtoMongoDB);
     
 
-    // Envie uma resposta ao cliente
-    return res.status(200).json({message: `Upload da imagem '${filename}' concluído.`, file:req.file});
+    return res.render('pages/purchase/purchase',{user:req.user,produto:produtoMongoDB});
   }catch(error){
     console.log(error);
     return res.status(500).json({error:'ocorreu um erro'});
