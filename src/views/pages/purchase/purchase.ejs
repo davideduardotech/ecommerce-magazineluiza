@@ -1,6 +1,12 @@
 <html>
     <head>
         <title><%= typeof title !== 'undefined' ? title : 'Comprar' %></title>
+
+        <!-- CODDING: Font para cartão de crédito -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <%- include('../../partials/head/googlefonts.ejs') %>
         <%- include('../../partials/head/tailwindcss.ejs') %>
@@ -30,7 +36,7 @@
                         <p class="text-sm text-azul">Adicione seu endereço</p>
                     </span>
                 </li>
-                <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                <li class="flex items-center text-blue-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
                     <span class="flex items-center justify-center w-[48px] h-[48px] border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
                         <i class="fa-solid fa-cart-shopping"></i>
                     </span>
@@ -57,7 +63,8 @@
             
             <!-- CODDING: Formulários -->
             <div class=" flex-1 md:flex-none w-full md:w-[60%] flex flex-row justify-center items-start">
-                <div class="w-[90%] bg-white shadow-[0_8px_24px_rgba(149,157,165,0.2)] rounded-[10px] py-[32px] px-[32px] grid grid-cols-2 gap-4">
+                <!-- CODDING: Formulário de informações pessoais -->
+                <div class="hidden w-[90%] bg-white shadow-[0_8px_24px_rgba(149,157,165,0.2)] rounded-[10px] py-[32px] px-[32px] grid grid-cols-2 gap-4">
                     <div class="col-span-2">
                         <div class="flex flex-row justify-start items-center space-x-[10px]">
                             <div class="rounded-full bg-azul w-[50px] h-[50px] flex flex-row justify-center items-center">
@@ -71,27 +78,180 @@
                     </div>
 
                     <!-- CODDING: Nome, Sobrenone, Email e Telefone -->
-                    <div class="col-span-1">
-                      <label for="nome" class="text-sm">Nome</label>
-                      <input type="text" placeholder="Nome" value="<%= typeof user !== 'undefined' && typeof user.nome !== 'undefined' ? user.nome :'' %>" id="nome" name="nome" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                    <div class="col-span-1" id="container-input-nome">
+                        <label for="nome" class="text-sm">Nome</label>
+                        <input type="text" placeholder="Nome" value="<%= typeof user !== 'undefined' && typeof user.nome !== 'undefined' ? user.nome :'' %>" id="input-nome" name="nome" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                        <p class="hidden text-red-500 text-sm">Nome inválido</p>
                     </div>
-                    <div class="col-span-1">
-                      <label for="email" class="text-sm">Sobrenome</label>
-                      <input type="text" id="sobrenome" value="<%= typeof user !== 'undefined' && typeof user.sobrenome !== 'undefined' ? user.sobrenome : '' %>" placeholder="Sobrenome" name="sobrenome" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                    <div class="col-span-1" id="container-input-sobrenome">
+                        <label for="email" class="text-sm">Sobrenome</label>
+                        <input type="text" id="input-sobrenome" value="<%= typeof user !== 'undefined' && typeof user.sobrenome !== 'undefined' ? user.sobrenome : '' %>" placeholder="Sobrenome" name="input-sobrenome" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                        <p class="hidden text-red-500 text-sm">Sobrenome inválido</p>
                     </div>
-                    <div class="col-span-1">
-                        <label for="email" class="text-sm">Email</label>
-                        <input type="email" id="email" placeholder="Email" name="email" value="<%= typeof user !== 'undefined' && typeof user.email !== 'undefined' ? user.email : '' %>" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                    <div class="col-span-1" id="container-input-email">
+                            <label for="email" class="text-sm">Email</label>
+                            <input type="email" id="input-email" placeholder="Email" name="email" value="<%= typeof user !== 'undefined' && typeof user.email !== 'undefined' ? user.email : '' %>" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                            <p class="hidden text-red-500 text-sm">Email inválido</p>
                     </div>
-                    <div class="col-span-1">
-                        <label for="email" class="text-sm">Telefone</label>
-                        <input type="text" id="telefone" name="telefone" value="<%= typeof user !== 'undefined' && typeof user.telefone !== 'undefined' ? user.telefone : '' %>" placeholder="Telefone" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                    <div class="col-span-1" id="container-input-telefone">
+                            <label for="telefone" class="text-sm">Telefone</label>
+                            <div class="flex flex-row items-center space-x-[10px]">
+                                <span class="text-sm">+55</span>
+                                <input type="number" id="input-telefone" name="telefone" value="<%= typeof user !== 'undefined' && typeof user.telefone !== 'undefined' ? user.telefone : '' %>" placeholder="Telefone" class="text-sm w-full p-2 border focus:outline-none focus:border-[2px] focus:border-azul rounded-md">
+                            </div>
+                            <p class="hidden text-red-500 text-sm">Telefone inválido</p>
                     </div>    
                     
                     <!-- CODDING: Botão continuar -->
                     <div class="col-span-2">
                         
-                        <button class="w-full h-[50px] rounded-[5px] bg-azul text-sm font-bold text-white">CONTINUAR</button>
+                        <button id="form-personal-information-button-continue" class="w-full h-[50px] rounded-[5px] bg-azul text-sm font-bold text-white">CONTINUAR</button>
+                    </div>
+                </div>
+
+                <!-- CODDING: Formulário de pagamento -->
+                <div class="w-[90%] bg-white shadow-[0_8px_24px_rgba(149,157,165,0.2)] rounded-[10px] py-[32px] px-[32px] ">
+                    
+                    
+
+                    <!-- CODDING: Metodo de pagamento -->
+                    <div class="w-full flex flex-col pb-[32px] space-y-[10px]">
+                       
+
+                        <!-- CODDING: Texto -->
+                        <div class="w-full flex flex-col justify-center items-center">
+                            <p class="text-base sm:text-lg text-[#404040]">Escolha seu método de pagamento:</p>
+                          
+                        </div>
+
+                        <!-- CODDING: Escolher metodo de pagameto -->
+                        <div class="w-full flex flex-row justify-center items-center space-x-[10px]">
+                            <!-- CODDING: Pix -->
+                            <div id="method-payment-pix" class="h-[60px] px-[16px] py-[8px] bg-azul text-white border-2 border-azul rounded-[10px] cursor-pointer flex flex-row justify-center items-center">
+                                <img src="/img/pages/purchase/payment/pix-white.svg" class="w-[25px] h-[25px] mr-[10px]" alt="">
+                                <span>Pix</span>
+                            </div>
+                            <!-- CODDING: Cartão de Crédito -->
+                            <div id="method-payment-credit-card" class="h-[60px] bg-white text-azul border-2 border-azul px-[16px] py-[8px] rounded-[10px] cursor-pointer flex flex-row justify-center items-center">
+                                <img src="/img/pages/purchase/payment/creditcard-white.png" class="hidden w-[25px] h-[25px] mr-[10px]" alt="">
+                                <span>Cartão de crédito</span>
+                            </div>
+                            <!-- CODDING: Boleto -->
+                            <div id="method-payment-boleto" class="h-[60px] border-[2px] border-azul bg-white text-azul px-[16px] py-[8px] rounded-[10px] cursor-pointer flex flex-row justify-center items-center">
+                                <img src="/img/pages/purchase/payment/boleto-white.png" class="hidden w-[25px] h-[25px] mr-[10px]" alt="">
+                                <span>Boleto</span>
+                            </div>
+                        </div>
+
+                        <!-- CODDING: Beneficios do pix -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 py-[32px]">
+                            <div class="border-[1px] border-gray-300 rounded-[10px] flex flex-col px-[16px] py-[16px]">
+                                <i class="fa-regular fa-clock text-azul text-base"></i>
+                                <p class="text-base font-bold">Aprovação imediata</p>
+                                <p class="text-sm">O pagamento com Pix leva pouco tempo para ser processado</p>
+                            </div>
+                            <div class="border-[1px] border-gray-300 rounded-[10px] flex flex-col px-[16px] py-[16px]">
+                                <i class="fa-solid fa-lock text-azul text-base"></i>
+                                <p class="text-base font-bold">Transação segura</p>
+                                <p class="text-sm">O Pix foi desenvolvido pelo Banco Central para facilitar suas compras, garantindo a proteção dos seus dados</p>
+                            </div>
+                            <div class="col-span-3 sm:col-span-1 border-[1px] border-gray-300 rounded-[10px] flex flex-col px-[16px] py-[16px]">
+                                <i class="fa-solid fa-qrcode text-azul text-base"></i>
+                                <p class="text-base font-bold">Finalize sua compra com facilidade</p>
+                                <p class="text-sm">É só acessar a área Pix no aplicativo do seu banco e escanear o QR code ou digitar o código</p>
+                            </div>
+
+                        </div>
+
+                        <!-- CODDING: Beneficios do boleto -->
+                        <div class="hidden grid grid-cols-2 gap-4 py-[32px]">
+                            <div class="col-span-1 py-[16px] px-[16px] border-[1px] border-gray-300 rounded-[10px]">
+                                <i class="fa-solid fa-calendar-days text-base text-azul"></i>
+                                <p class="text-base font-bold">Pague até a data de vencimento</p>
+                                <p class="text-sm">Faça o pagamento até a data de vencimento e garanta seu acesso ao produto.</p>
+                            </div>
+
+                            <div class="col-span-1 py-[16px] px-[16px] border-[1px] border-gray-300 rounded-[10px]">
+                                <i class="fa-solid fa-lock text-base text-azul"></i>
+                                <p class="text-base font-bold">Transação segura</p>
+                                <p class="text-sm">O Pix foi desenvolvido pelo Banco Central para facilitar suas compras, garantindo a proteção dos seus dados</p>
+                            </div>
+                        </div>
+
+                        <!-- CODDING: Formulário cartão de crédito -->
+                        <div class="hidden grid grid-cols-1 lg:grid-cols-2 py-[32px]">
+                            <div class="">
+                                <!-- CODDING: Preencher campos do cartão de crédito -->
+                                <div class="grid grid-cols-2 gap-4 p-[10px]">
+                                    <div class="col-span-2">
+                                        <label for="input-creditcard-name" class="text-sm">Nome do titular do cartão</label>
+                                        <input type="text" name="numero" id="input-creditcard-name" placeholder="Titular do cartão" class="text-sm w-full p-2 border rounded-[10px] focus:outline-none focus:border-[2px] focus:border-azul">
+                                    </div>
+                                    <div class="col-span-2">
+                                        <label for="input-creditcard-number" class="text-sm">Número do cartão</label>
+                                        <input type="text" name="numero" id="input-creditcard-number" placeholder="Número do cartão" class="text-sm w-full p-2 border focus:outline-none focus:border-2 focus:border-azul">
+                                    </div>
+                                    <div class="col-span-1">
+                                        <label for="input-creditcard-date" class="text-sm">Data de expiração</label>
+                                        <input type="text" name="numero" placeholder="MM/YY" id="input-creditcard-date" class="text-sm w-full p-2 border focus:outline-none focus:border-2 focus:border-azul">
+                                    </div>
+                                    <div class="col-span-1">
+                                        <label for="input-creditcard-cvc" class="text-sm">CVC</label>
+                                        <input type="text" name="numero" placeholder="Codigo de verificação" id="input-creditcard-cvc" class="text-sm w-full p-2 border focus:outline-none focus:border-2 focus:border-azul">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" flex flex-row justify-center items-center"> <!-- bg-gradient-to-b from-[#464B52] via-[#4F545C] to-[#6C737C] -->
+                                <div class="w-[350px] h-[200px] rounded-[20px] bg-gradient-to-b from-[#464B52] via-[#4F545C] to-[#6C737C] shadow-[1.95px_1.95px_2.6px_rgba(0,0,0,0.15)]">   
+                                    <div class="w-full px-[32px] pt-[32px] ">
+                                        <img width="40" height="40" src="https://img.icons8.com/ios-filled/50/ffffff/sim-card-chip.png" alt="sim-card-chip"/>
+                                    </div>
+                                    <div class="w-full px-[32px] mt-[16px] flex flex-col items-start">
+                                        
+                                        <p class="text-sm text-white font-['Inconsolata']">David Eduardo Da Silva</p>
+                                        <p class="text-base font-black text-white font-['Inconsolata']">**** **** **** **** 2342</p>
+
+                                    </div>
+                                    <div class="w-full px-[32px] mt-[16px] flex flex-row justify-between items-center ">
+                                        <div class="flex flex-col">
+                                            <p class="text-sm/none text-white font-['Inconsolata']">Data de válidade</p>
+                                            <p class="text-base font-black text-white font-['Inconsolata']">**/**</p>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <p class="text-sm/none text-white font-['Inconsolata']">CVC</p>
+                                            <p class="text-base font-black text-white font-['Inconsolata']">***</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+
+                   
+                  
+                    
+                    <!-- CODDING: Botão continuar -->
+                    <div class="w-full">
+                        
+                       <!-- CODDING: Botão pix -->
+                        <button id="form-personal-information-button-continue" class="w-full h-[50px] rounded-[5px] bg-azul text-sm font-black text-white flex flex-row justify-center items-center">
+                            <img src="/img/pages/purchase/payment/pix-white.svg" alt="" class="w-[25px] h-[25px] mr-[5px]">
+                            <span>GERAR PIX</span>
+                        </button>
+
+                        <!-- CODDING: Botão boleto -->
+                        <button id="form-personal-information-button-continue" class="hidden w-full h-[50px] rounded-[5px] bg-azul text-sm font-black text-white flex flex-row justify-center items-center">
+                            <img src="/img/pages/purchase/payment/boleto-white.png" alt="" class="w-[25px] h-[25px] mr-[5px]">
+                            <span>GERAR BOLETO</span>
+                        </button>
+
+                        <!-- CODDING: Botão cartão de crédito -->
+                        <button id="form-personal-information-button-continue" class="hidden w-full h-[50px] rounded-[5px] bg-azul text-base font-normal text-white flex flex-row justify-center items-center">
+                            <img src="/img/pages/purchase/payment/creditcard-white.png" alt="" class="hidden w-[25px] h-[25px] mr-[5px]">
+                            <span>Comprar Agora</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -125,50 +285,20 @@
                                         <th class="text-sm px-[16px] rounded-[5px] ">Total</th>
                                     </tr>
                                 </thead>
-                                <tbody id="produtos">
+                                <tbody id="products">
                                     <!-- CODDING: Produto 01 -->
                                     <tr class="border-b-[1px] border-[#e5e5e5]" produto-id-data="<%= typeof produto !== 'undefined' ? produto._id : '' %>">
                                         <td class="py-[10px] min-w-[90px] max-w-[120px] min-h-[90px] max-h-[120px]"><img src="<%= typeof produto !== 'undefined' ? produto.image[0].url : '' %>" class="w-auto h-auto max-w-full max-h-full" alt=""> </td>
                                         <td class="py-[10px] text-sm"><%= typeof produto !== 'undefined' && typeof produto.name !== 'undefined' ? produto.name : '' %></td>
                                         <td class="py-[10px]">
                                             <div class="w-full flex flex-row justify-center items-center">
-                                                <i class="flex flex-row justify-center items-center fa-solid fa-minus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tl-[5px] rounded-bl-[5px] cursor-pointer"></i>
-                                                <span class="flex flex-row justify-center items-center w-[25px] h-[25px] border border-gray-300 text-sm">1</span>
-                                                <i class="flex flex-row justify-center items-center fa-solid fa-plus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tr-[5px] rounded-br-[5px] cursor-pointer"></i>
+                                                <i class="table-product-remove-item flex flex-row justify-center items-center fa-solid fa-minus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tl-[5px] rounded-bl-[5px] cursor-pointer" produto-id-data="<%= typeof produto !== 'undefined' ? produto._id : '' %>"></i>
+                                                <span id="table-product-item-quantity" class="flex flex-row justify-center items-center w-[25px] h-[25px] border border-gray-300 text-sm">1</span>
+                                                <i class="table-product-add-item flex flex-row justify-center items-center fa-solid fa-plus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tr-[5px] rounded-br-[5px] cursor-pointer" produto-id-data="<%= typeof produto !== 'undefined' ? produto._id : '' %>"></i>
                                             </div>
                                         </td>
-                                        <td class="py-[10px] text-center text-sm"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
-                                        <td class="py-[10px] text-center text-sm text-azul"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
-                                    </tr>
-
-                                    <!-- CODDING: Produto 02 -->
-                                    <tr class="border-b-[1px] border-[#e5e5e5]" produto-id-data="jahjsdfhjasfhjhfwhefafwefa">
-                                        <td class="py-[10px] min-w-[90px] max-w-[120px] min-h-[90px] max-h-[120px]"><img src="<%= typeof produto !== 'undefined' ? produto.image[0].url : '' %>" class="w-auto h-auto max-w-full max-h-full" alt=""> </td>
-                                        <td class="py-[10px] text-sm"><%= typeof produto !== 'undefined' && typeof produto.name !== 'undefined' ? produto.name : '' %></td>
-                                        <td class="py-[10px]">
-                                            <div class="w-full flex flex-row justify-center items-center">
-                                                <i class="flex flex-row justify-center items-center fa-solid fa-minus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tl-[5px] rounded-bl-[5px] cursor-pointer"></i>
-                                                <span class="flex flex-row justify-center items-center w-[25px] h-[25px] border border-gray-300 text-sm">1</span>
-                                                <i class="flex flex-row justify-center items-center fa-solid fa-plus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tr-[5px] rounded-br-[5px] cursor-pointer"></i>
-                                            </div>
-                                        </td>
-                                        <td class="py-[10px] text-center text-sm"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
-                                        <td class="py-[10px] text-center text-sm text-azul"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
-                                    </tr>
-
-                                    <!-- CODDING: Produto 03 -->
-                                    <tr class="border-b-[1px] border-[#e5e5e5]" produto-id-data="afsjfhasfsfasfafsfawfwfawf">
-                                        <td class="py-[10px] min-w-[90px] max-w-[120px] min-h-[90px] max-h-[120px]"><img src="<%= typeof produto !== 'undefined' ? produto.image[0].url : '' %>" class="w-auto h-auto max-w-full max-h-full" alt=""> </td>
-                                        <td class="py-[10px] text-sm"><%= typeof produto !== 'undefined' && typeof produto.name !== 'undefined' ? produto.name : '' %></td>
-                                        <td class="py-[10px]">
-                                            <div class="w-full flex flex-row justify-center items-center">
-                                                <i class="flex flex-row justify-center items-center fa-solid fa-minus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tl-[5px] rounded-bl-[5px] cursor-pointer"></i>
-                                                <span class="flex flex-row justify-center items-center w-[25px] h-[25px] border border-gray-300 text-sm">1</span>
-                                                <i class="flex flex-row justify-center items-center fa-solid fa-plus text-sm w-[25px] h-[25px] border border-gray-300 rounded-tr-[5px] rounded-br-[5px] cursor-pointer"></i>
-                                            </div>
-                                        </td>
-                                        <td class="py-[10px] text-center text-sm"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
-                                        <td class="py-[10px] text-center text-sm text-azul"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
+                                        <td id="table-product-unit-value" class="py-[10px] text-center text-sm"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
+                                        <td id="table-product-amount" class="py-[10px] text-center text-sm text-[#404040] font-bold"><%= typeof produto !== 'undefined' && produto.price ? `R$ ${produto.price.toFixed(2)}` : '' %></td>
                                     </tr>
 
 
@@ -185,16 +315,16 @@
 
                         <!-- CODDING: Preço(R$) -->
                         <div class="py-[32px] px-[32px] w-full flex flex-col">
-                            <div class="w-full flex flex-row justify-between items-center">
+                            <div class="w-full flex flex-row justify-between items-center text-[#404040]">
                                 <p class="text-base">Subtotal</p>
-                                <p class="text-base">R$634</p>
+                                <p id="subtotal-value" class="text-base">R$634</p>
                             </div>
 
                             <hr class="h-[1px] bg-gray-300 my-[10px]">
 
-                            <div class="w-full flex flex-row justify-between items-center">
+                            <div class="w-full flex flex-row justify-between items-center text-[#404040]">
                                 <p class="text-lg font-black">Total</p>
-                                <p class="text-lg font-black">R$634</p>
+                                <p id="total-value" class="text-lg font-black">R$634</p>
                             </div>
                         </div>
                         
