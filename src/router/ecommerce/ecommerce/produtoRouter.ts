@@ -1,12 +1,12 @@
 import express, { Router } from 'express';
-import { ProdutoModel } from '../../model/produto';
-import User from '../../model/user';
+import { ProdutoModel } from '../../../model/produto';
+import User from '../../../model/user';
 import mongoose from 'mongoose';
-import { authWithCookie } from '../auth';
+import { authWithCookie } from '../../auth';
 
-const ecommerceRouter: Router = express.Router();
+const produtoRouter: Router = express.Router();
 
-ecommerceRouter.get('/produto/:id',authWithCookie,async (req:any, res:any, next:any)=>{
+produtoRouter.get('/:id',authWithCookie,async (req:any, res:any, next:any)=>{
     try{
         const {id} = req.params;
 
@@ -38,4 +38,4 @@ ecommerceRouter.get('/produto/:id',authWithCookie,async (req:any, res:any, next:
     }
 })
 
-export {ecommerceRouter};
+export default produtoRouter;

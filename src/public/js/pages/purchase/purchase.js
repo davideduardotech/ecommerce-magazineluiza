@@ -1,10 +1,13 @@
-
-// CODDING: Stepper
 class Stepper{
     constructor(){
-        this.formularioDeInformacoesPessoais = document.getElementById('formulario-informacoes-pessoais');
-        this.formularioDeEndereco = document.getElementById('formulario-endereco');
-        this.formularioDePagamento = document.getElementById('formulario-de-pagamento');
+        // CODDING: Formularios Instancias
+        this.formularioDePagamento = null;
+
+        // CODDING: Formularios Container
+        this.formularioDeInformacoesPessoaisElement = document.getElementById('formulario-informacoes-pessoais');
+        this.formularioDeEnderecoElement = document.getElementById('formulario-endereco');
+        this.formularioDePagamentoElement = document.getElementById('formulario-de-pagamento');
+        
 
         this.iconSize = '';
 
@@ -58,60 +61,63 @@ class Stepper{
         
     }
 
-    alterarStepper({type}){ // {type: "personal-information"}, {type: "address"}
-        if(type === 'personal-information'){
-
-        }
-    }
     
 
     preencherInformacoesPessoais(){
         // alterar stepper para informações pessoais
         this.activeStepper(this.personalInformationStepper);
-        this.changeStepper({stepper: this.personalInformationStepper, title: 'Informações Pessoais', subtitle: 'preencha as informações'});
+        this.changeStepper({stepper: this.personalInformationStepper,icon: 'fa-solid fa-user', title: 'Informações Pessoais', subtitle: 'preencha as informações'});
         
         // mostrar formulario de informações pessoais
-        this.formularioDeInformacoesPessoais.classList.remove('hidden');
+        this.formularioDeInformacoesPessoaisElement.classList.remove('hidden');
 
         // esconder formulário de endereço
-        this.formularioDeEndereco.classList.add('hidden');
+        this.formularioDeEnderecoElement.classList.add('hidden');
     
         // esconder formulário de pagamento
-        this.formularioDePagamento.classList.add('hidden');
+        this.formularioDePagamentoElement.classList.add('hidden');
+        
+        
     } 
     
     preencherEndereco(){
+
         // alterar stepper para informações pessoais
         this.changeStepper({stepper: this.personalInformationStepper, icon: 'fa-solid fa-location-dot text-xl', title: 'Endereço de Entrega', subtitle: 'preencha seu endereço'});
       
         // enconder formulário de informações pessoais
-        this.formularioDeInformacoesPessoais.classList.add('hidden');
+        this.formularioDeInformacoesPessoaisElement.classList.add('hidden');
 
         // mostrar formulário de endereço
-        this.formularioDeEndereco.classList.remove('hidden');
+        this.formularioDeEnderecoElement.classList.remove('hidden');
+
+        // desativar stepper de pagamento
+        this.disableStepper(this.paymentStepper);
 
         // esconder formulário de pagamento
-        this.formularioDePagamento.classList.add('hidden');
+        this.formularioDePagamentoElement.classList.add('hidden');
+
+        // esconder botão de pagamento do formulario de pagamento
+        this.formularioDePagamento.removePaymentButton();
     }
 
     preencherPagamento(){
         // alterar stepper para pagamento
         this.activeStepper(this.paymentStepper);
         
-
         // enconder formulário de informações pessoais
-        this.formularioDeInformacoesPessoais.classList.add('hidden');
+        this.formularioDeInformacoesPessoaisElement.classList.add('hidden');
 
         // esconder formulário de endereço
-        this.formularioDeEndereco.classList.add('hidden');
+        this.formularioDeEnderecoElement.classList.add('hidden');
 
-        // esconder formulário de pagamento
-        this.formularioDePagamento.classList.remove('hidden');
+        // mostrar formulário de pagamento
+        this.formularioDePagamentoElement.classList.remove('hidden');
+
+        // mostrar botão de pagamento
+        this.formularioDePagamento.showPaymentButton();
     }
 }
-
-const stepper = new Stepper();
-stepper.preencherInformacoesPessoais(); // CODDING: Preencher informações pessoais
 
 class MinhaSacola{
     constructor(){
@@ -216,16 +222,8 @@ class MinhaSacola{
     }
 }
 
-const minhaSacola = new MinhaSacola();
-minhaSacola.addItem(); // CODDING: Adicionar item
-minhaSacola.removeItem(); // CODDING: Remover item
-
-console.log(`input nome:`,document.getElementById('input-nome'));
-console.log(`input nome:`,document.getElementById('input-nome').value);
-
-// CODDING: Formulario de informações pessoais
 class FormularioInformacoesPessoais{
-    constructor(){
+    constructor(stepper){
         // CODDING: Instancia de Stepper
         this.stepper = stepper;
 
@@ -295,6 +293,11 @@ class FormularioInformacoesPessoais{
         paragraph.classList.add('hidden');
     }
 
+    saveLocalStorage(){
+        if(localStorage.getItem('formulario-de-informacoes-pessoais')) localStorage.removeItem('formulario-de-informacoes-pessoais');
+        localStorage.setItem('formulario-de-informacoes-pessoais',JSON.stringify({nome: this.nome, sobrenome: this.sobrenome, email: this.email, telefone: this.telefone}));
+    }
+
     continuar(){
         const buttonContinue = document.getElementById('formulario-informacoes-pessoais-botao-continuar');
         buttonContinue.addEventListener('click',()=>{
@@ -317,34 +320,36 @@ class FormularioInformacoesPessoais{
 
             if(isError) return;
 
+            // CODDING: Salvar informações pessoais no LocalStorage
+            this.saveLocalStorage();
+
             // CODDING: Mostrar formulario de endereço
             this.stepper.preencherEndereco(); 
         });
     }
 }
 
-const formularioInformacoesPessoais = new FormularioInformacoesPessoais();
-formularioInformacoesPessoais.continuar(); // CODDING: Continuar
-
-// CODDING: Formulário de endereço
-class FormularioAddress{
-    constructor(){
+class FormularioEndereco{
+    constructor(stepper){
         // CODDING: Stepper
         this.stepper = stepper;
-
 
         this.rua = document.getElementById('input-rua').value;
         this.ruaElement = document.getElementById('input-rua');
         this.ruaContainer = document.getElementById('container-input-rua');
+
         this.bairro = document.getElementById('input-bairro').value;
         this.bairroElement = document.getElementById('input-bairro');
         this.bairroContainer = document.getElementById('container-input-bairro');
+
         this.cidade = document.getElementById('input-cidade').value;
         this.cidadeElement = document.getElementById('input-cidade');
         this.cidadeContainer = document.getElementById('container-input-cidade');
+
         this.estado = document.getElementById('input-estado').value;
         this.estadoElement = document.getElementById('input-estado');
         this.estadoContainer = document.getElementById('container-input-estado');
+
         this.cep = document.getElementById('input-cep').value;
         this.cepElement = document.getElementById('input-cep');
         this.cepContainer = document.getElementById('container-input-cep');
@@ -391,6 +396,11 @@ class FormularioAddress{
         })
     }
 
+    saveLocalStorage(){
+        if(localStorage.getItem('formulario-de-endereco')) localStorage.removeItem('formulario-de-endereco');
+        localStorage.setItem('formulario-de-endereco',JSON.stringify({rua: this.rua, bairro: this.bairro,cidade: this.cidade, estado: this.estado, cep: this.cep}));
+    }
+
     addErrorInInput(element){
         const label = element.querySelector('label');
         const input = element.querySelector('input');
@@ -424,9 +434,17 @@ class FormularioAddress{
         }
     }
 
+    voltar(){
+        // CODDING: Botão voltar
+        const buttonVoltar = document.getElementById('formulario-endereco-botao-voltar');
+        buttonVoltar.addEventListener('click',()=>{
+            this.stepper.preencherInformacoesPessoais();
+        });
+    }
     continuar(){
-        const button = document.getElementById('form-address-button-continue');
-        button.addEventListener('click',async ()=>{
+        // CODDING: Botão continuar
+        const buttonContinuar = document.getElementById('form-address-button-continue');
+        buttonContinuar.addEventListener('click',async ()=>{
             let isError = false;
             if(this.ruaElement.value.trim().length === 0) (this.addErrorInInput(this.ruaContainer), isError = true); // verificar nome da rua
             if(this.bairroElement.value.trim().length === 0) (this.addErrorInInput(this.bairroContainer), isError = true); // verificar bairro
@@ -438,151 +456,184 @@ class FormularioAddress{
                 if(!request.status) (this.addErrorInInput(this.cepContainer), isError = true);
             }
             
-
-            if(isError) return console.log('Erros encontrado não é possivel continuar');
-            console.log(`rua: ${this.rua}\nbairro: ${this.bairro}\ncidade: ${this.cidade}\nestado: ${this.estado}\ncep: ${this.cep}`);
-
+            if(isError) return;
+            
+            // CODDING: Salvar no LocalStorage
+            this.saveLocalStorage(); 
+          
             // CODDING: Preencher informações de pagamento
             this.stepper.preencherPagamento(); 
         });
     }
 }
 
-const formularioAddress = new FormularioAddress();
-formularioAddress.continuar(); // CODDING: Continuar 
+class FormularioDePagamento{
+    constructor(stepper){
+        this.stepper = stepper;
 
-// CODDING: Realizar pagamento 
-class RealizarPagamento{
-    constructor(){
-        // tipagem
+        // CODDING: Tipagem
         this.typePix = 'pix';
         this.typeCreditCard = 'credit_card';
         this.typeBoleto = 'boleto';
 
-        this.metodoDePagamento = this.typePix;
+        // CODDING: Botões de seleção
+        this.botaoDeSelecaoPix = document.getElementById('method-payment-pix');
+        this.botaoDeSelecaoCartaoDeCredito = document.getElementById('method-payment-credit-card');
+        this.botaoDeSelecaoBoleto = document.getElementById('method-payment-boleto');
+
+
+        // CODDING: Botões de pagamento
+        this.botoesDePagamentoElement = document.getElementById('formulario-de-pagamento-botoes-de-pagamento');
+        this.botaoDePagamentoPix = document.getElementById('formulario-de-pagamento-pix');
+        this.botaoDePagamentoCreditCard = document.getElementById('formulario-de-pagamento-creditcard');
+        this.botaoDePagamentoBoleto = document.getElementById('formulario-de-pagamento-boleto');
+
+      
+        this.selectedPaymentMethod = this.typePix;
     }
-    resetButtonSelected(selectType){
+    voltar(){
+        const botaoVoltar = document.getElementById('formulario-de-pagamento-botao-voltar');
+        botaoVoltar.addEventListener('click',()=>{
+            this.stepper.preencherEndereco();
+        });
+    }
+    showPaymentButton(){
+        if(this.selectedPaymentMethod === this.typePix) this.botaoDePagamentoPix.classList.remove('hidden');
+        if(this.selectedPaymentMethod === this.typeCreditCard) this.botaoDePagamentoCreditCard.classList.remove('hidden');
+        if(this.selectedPaymentMethod === this.typeBoleto) this.botaoDePagamentoBoleto.classList.remove('hidden');
+    }
+    removePaymentButton(){
+        if(this.selectedPaymentMethod === this.typePix) this.botaoDePagamentoPix.classList.add('hidden');
+        if(this.selectedPaymentMethod === this.typeCreditCard) this.botaoDePagamentoCreditCard.classList.add('hidden');
+        if(this.selectedPaymentMethod === this.typeBoleto) this.botaoDePagamentoBoleto.classList.add('hidden');
+    }
+    resetButton(selectType){
         // CODDING: Resetar botão do pix
         if(selectType === this.typePix){
-            const methodPaymentPix = document.getElementById('method-payment-pix');
-            methodPaymentPix.classList.replace('bg-azul','bg-white');
-            methodPaymentPix.classList.replace('text-white','text-azul');
-            methodPaymentPix.querySelector('img').classList.add('hidden');
+        
+            this.botaoDeSelecaoPix.classList.replace('bg-azul','bg-white');
+            this.botaoDeSelecaoPix.classList.replace('text-white','text-azul');
+            this.botaoDeSelecaoPix.querySelector('img').classList.add('hidden');
 
             // remover beneficios do pix
             const beneficiosDoPix = document.getElementById('method-payment-benefits-of-pix');
             beneficiosDoPix.classList.add('hidden');
 
             // remover botão do pix
-            const buttonDoPix = document.getElementById('method-payment-button-pix');
-            buttonDoPix.classList.add("hidden");
+            this.botaoDePagamentoPix.classList.add("hidden");
         }
 
         // CODDING: Resetar botão do cartão de credito
         if(selectType === this.typeCreditCard){
-            const methodPaymentCreditCard = document.getElementById('method-payment-credit-card');
-            methodPaymentCreditCard.classList.replace('bg-azul','bg-white');
-            methodPaymentCreditCard.classList.replace('text-white','text-azul');
-            methodPaymentCreditCard.querySelector('img').classList.add('hidden');
+            
+            this.botaoDeSelecaoCartaoDeCredito.classList.replace('bg-azul','bg-white');
+            this.botaoDeSelecaoCartaoDeCredito.classList.replace('text-white','text-azul');
+            this.botaoDeSelecaoCartaoDeCredito.querySelector('img').classList.add('hidden');
 
             // remover formulário do cartão de crédito
             const formularioCartaoDeCredito = document.getElementById('method-payment-form-credit-card');
             formularioCartaoDeCredito.classList.add('hidden');
 
             // remover botão do cartão de crédito
-            const buttonCreditCard = document.getElementById('method-payment-button-creditcard');
-            buttonCreditCard.classList.add('hidden');
+            this.botaoDePagamentoCreditCard.classList.add('hidden');
 
         }
 
         // CODDING: Resetar botão do boleto
         if(selectType === this.typeBoleto){
-            const methodPaymentBoleto = document.getElementById('method-payment-boleto');
-            methodPaymentBoleto.classList.replace('bg-azul','bg-white');
-            methodPaymentBoleto.classList.replace('text-white','text-azul');
-            methodPaymentBoleto.querySelector('img').classList.add('hidden');
+
+            this.botaoDeSelecaoBoleto.classList.replace('bg-azul','bg-white');
+            this.botaoDeSelecaoBoleto.classList.replace('text-white','text-azul');
+            this.botaoDeSelecaoBoleto.querySelector('img').classList.add('hidden');
 
             // remover beneficios do boleto
             const beneficiosDoBoleto = document.getElementById('method-payment-benefits-of-boleto');
             beneficiosDoBoleto.classList.add('hidden');
 
             // remover botão do boleto
-            const buttonBoleto = document.getElementById('method-payment-button-boleto');
-            buttonBoleto.classList.add('hidden');
+            this.botaoDePagamentoBoleto.classList.add('hidden');
         }
     }
     selectedPix(){
-        const methodPaymentPix = document.getElementById('method-payment-pix');
-        methodPaymentPix.addEventListener('click',()=>{
-            if(this.metodoDePagamento === this.typePix) return console.log(`${this.metodoDePagamento} já selecioando, escolha outro`);
+        this.botaoDeSelecaoPix.addEventListener('click',()=>{
+            if(this.selectedPaymentMethod === this.typePix) return;
 
-            console.log('resetar botão:',this.metodoDePagamento);
-            this.resetButtonSelected(this.metodoDePagamento); // resetar botão selecionado
-            this.metodoDePagamento = this.typePix;
+            this.resetButton(this.selectedPaymentMethod); // resetar botão selecionado
+            this.selectedPaymentMethod = this.typePix;
 
-            methodPaymentPix.classList.replace('bg-white','bg-azul');
-            methodPaymentPix.classList.replace('text-azul','text-white');
-            methodPaymentPix.querySelector('img').classList.remove('hidden');
+            this.botaoDeSelecaoPix.classList.replace('bg-white','bg-azul');
+            this.botaoDeSelecaoPix.classList.replace('text-azul','text-white');
+            this.botaoDeSelecaoPix.querySelector('img').classList.remove('hidden');
 
             // mostrar beneficios do pix
             const beneficiosDoPix = document.getElementById('method-payment-benefits-of-pix');
             beneficiosDoPix.classList.remove('hidden');
 
             // mostrar botão do pix
-            const buttonPix = document.getElementById('method-payment-button-pix');
-            buttonPix.classList.remove('hidden');
+            this.botaoDePagamentoPix.classList.remove('hidden');
 
         });
     }
     selectedCreditCard(){
-        const methodPaymentCreditCard = document.getElementById('method-payment-credit-card');
-        methodPaymentCreditCard.addEventListener('click',()=>{
-            if(this.metodoDePagamento === this.typeCreditCard) return console.log(`${this.metodoDePagamento} já selecioando, escolha outro`);
+        this.botaoDeSelecaoCartaoDeCredito.addEventListener('click',()=>{
+            if(this.selectedPaymentMethod === this.typeCreditCard) return
 
-            console.log('resetar botão:',this.metodoDePagamento);
-            this.resetButtonSelected(this.metodoDePagamento); // resetar botão selecionado
-            this.metodoDePagamento = this.typeCreditCard;
+            this.resetButton(this.selectedPaymentMethod); // resetar botão selecionado
+            this.selectedPaymentMethod = this.typeCreditCard;
 
-            methodPaymentCreditCard.classList.replace('bg-white','bg-azul');
-            methodPaymentCreditCard.classList.replace('text-azul','text-white');
-            methodPaymentCreditCard.querySelector('img').classList.remove('hidden');
+            this.botaoDeSelecaoCartaoDeCredito.classList.replace('bg-white','bg-azul');
+            this.botaoDeSelecaoCartaoDeCredito.classList.replace('text-azul','text-white');
+            this.botaoDeSelecaoCartaoDeCredito.querySelector('img').classList.remove('hidden');
 
             // mostrar formulário do cartão de credito
             const formularioCreditCard = document.getElementById('method-payment-form-credit-card');
             formularioCreditCard.classList.remove('hidden');
 
             // mostrar botão do cartão de crédito
-            const buttonCreditCard = document.getElementById('method-payment-button-creditcard');
-            buttonCreditCard.classList.remove('hidden');
+            this.botaoDePagamentoCreditCard.classList.remove('hidden');
         });
     }
     selectedBoleto(){
-        const methodPaymentBoleto = document.getElementById('method-payment-boleto');
-        methodPaymentBoleto.addEventListener('click',()=>{
-            if(this.metodoDePagamento === this.typeBoleto) return console.log(`${this.metodoDePagamento} já selecioando, escolha outro`);
+        this.botaoDeSelecaoBoleto.addEventListener('click',()=>{
+            if(this.selectedPaymentMethod === this.typeBoleto) return console.log(`${this.metodoDePagamento} já selecioando, escolha outro`);
 
-            console.log('resetar botão:',this.metodoDePagamento);
-            this.resetButtonSelected(this.metodoDePagamento); // resetar botão selecionado
-            this.metodoDePagamento = this.typeBoleto;
+            this.resetButton(this.selectedPaymentMethod); // resetar botão selecionado
+            this.selectedPaymentMethod = this.typeBoleto;
 
-            methodPaymentBoleto.classList.replace('bg-white','bg-azul');
-            methodPaymentBoleto.classList.replace('text-azul','text-white');
-            methodPaymentBoleto.querySelector('img').classList.remove('hidden');
+            this.botaoDeSelecaoBoleto.classList.replace('bg-white','bg-azul');
+            this.botaoDeSelecaoBoleto.classList.replace('text-azul','text-white');
+            this.botaoDeSelecaoBoleto.querySelector('img').classList.remove('hidden');
 
             // mostrar beneficios do boleto
             const beneficiosDoBoleto = document.getElementById('method-payment-benefits-of-boleto');
             beneficiosDoBoleto.classList.remove('hidden');
 
             // mostrar botão do boleto
-            const buttonBoleto = document.getElementById('method-payment-button-boleto');
-            buttonBoleto.classList.remove('hidden');
+            this.botaoDePagamentoBoleto.classList.remove('hidden');
         });
     }
     
 }
 
-const realizarPagamento = new RealizarPagamento();
-realizarPagamento.selectedPix(); 
-realizarPagamento.selectedCreditCard();
-realizarPagamento.selectedBoleto();
+const stepper = new Stepper();
+stepper.preencherInformacoesPessoais(); 
 
+
+const minhaSacola = new MinhaSacola();
+minhaSacola.addItem();
+minhaSacola.removeItem();
+
+const formularioInformacoesPessoais = new FormularioInformacoesPessoais(stepper);
+formularioInformacoesPessoais.continuar(); 
+
+
+const formularioEndereco = new FormularioEndereco(stepper);
+formularioEndereco.continuar(); 
+formularioEndereco.voltar();
+
+const formularioDePagamento = new FormularioDePagamento(stepper);
+stepper.formularioDePagamento = formularioDePagamento;
+formularioDePagamento.selectedPix(); 
+formularioDePagamento.selectedCreditCard();
+formularioDePagamento.selectedBoleto();
+formularioDePagamento.voltar();

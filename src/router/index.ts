@@ -1,13 +1,13 @@
-import express,{ Router } from 'express';
-import { userRouter } from './api/userRouter';
-import { ecommerceRouter } from './ecommerce/ecommerceRouter';
-import { produtoRouter } from './api/produtoRouter';
+import express from 'express';
+import apiRouter from './api';
+import ecommerceRouter from './ecommerce/ecommerce';
+import dashboardRouter from './ecommerce/dashboard';
 
-const apiRouter: Router = express.Router();
+const appRouter = express.Router();
 
-// CODDING: Api
-apiRouter.use("/user",userRouter);
-apiRouter.use("/produto",produtoRouter);
+appRouter.use('/api', apiRouter);
+appRouter.use('/ecommerce',ecommerceRouter);
+appRouter.use('/dashboard',dashboardRouter);
 
 
-export { apiRouter,ecommerceRouter };
+export default appRouter;

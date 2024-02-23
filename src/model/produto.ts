@@ -1,7 +1,8 @@
 import mongoose,{ Document, Schema, mongo } from "mongoose";
 
 const produtoSchema = new Schema({
-    user:{type: Schema.Types.ObjectId, ref:"User",required: true},
+    user: {type: mongoose.Types.ObjectId, required: true},
+    loja: {type: mongoose.Types.ObjectId, required: true},
     name:{
         type: String,
         required: true

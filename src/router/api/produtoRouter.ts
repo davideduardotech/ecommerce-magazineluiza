@@ -48,4 +48,4 @@ produtoRouter.delete('/:id',auth,deletarProduto);
 // CODDING: Buscar Produto
 produtoRouter.get('/search',searchProduto);
 
-export {produtoRouter};
+export default produtoRouter;

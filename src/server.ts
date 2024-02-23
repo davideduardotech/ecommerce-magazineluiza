@@ -7,7 +7,6 @@ import fs from 'fs';
 import mongoose, { ConnectOptions } from 'mongoose';
 import multer from 'multer';
 import * as dotenv from 'dotenv';
-import { apiRouter, ecommerceRouter } from './router';
 import {body, validationResult } from 'express-validator';
 
 import User from './model/user';
@@ -58,8 +57,8 @@ const upload = multer({ storage: storage,
 fileFilter: fileFilter});
 
 // CODDING: Configurar Rotas
-app.use('/api',apiRouter);
-app.use('/',ecommerceRouter);
+import appRouter from './router';
+app.use('/',appRouter);
 
 
 

@@ -1,0 +1,1 @@
+console.log('arquivo de script(pedidos.js) carregado');

@@ -23,4 +23,4 @@ userRouter.delete('/',()=>{
     // excluir usuario
 })
 
-export { userRouter };
+export default userRouter;

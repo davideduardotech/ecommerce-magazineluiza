@@ -153,16 +153,14 @@
                     
                     <!-- CODDING: Botão do formulario de endereço -->
                     <div class="col-span-3 w-full pt-[16px] grid grid-cols-2 gap-4">
-                        <button class="col-span-1 w-full h-[50px] rounded-[5px] bg-white border-2 border-azul text-sm font-bold text-azul">VOLTAR</button>
+                        <button id="formulario-endereco-botao-voltar" class="col-span-1 w-full h-[50px] rounded-[5px] bg-white border-2 border-azul text-sm font-bold text-azul">VOLTAR</button>
                         <button id="form-address-button-continue" class="col-span-1 w-full h-[50px] rounded-[5px] bg-azul text-sm font-bold text-white">CONTINUAR</button>
                     </div>
                 </div>
 
                 <!-- CODDING: Formulário de pagamento -->
                 <div id="formulario-de-pagamento" class="hidden w-[90%] bg-white shadow-[0_8px_24px_rgba(149,157,165,0.2)] rounded-[10px] py-[32px] px-[32px] ">
-                    
-                    
-
+                
                     <!-- CODDING: Metodo de pagamento -->
                     <div class="w-full flex flex-col space-y-[10px]">
                        
@@ -226,7 +224,7 @@
                             </div>
                         </div>
 
-                        <!-- CODDING: Formulário cartão de crédito -->
+                        <!-- CODDING: Preencher informações do cartão de crédito -->
                         <div id="method-payment-form-credit-card" class="hidden grid grid-cols-1 xl:grid-cols-2 py-[32px] space-y-[32px]">
                             <!-- CODDING: Cartão de credito -->
                             <div class=" flex flex-row justify-center items-center"> <!-- bg-gradient-to-b from-[#464B52] via-[#4F545C] to-[#6C737C] -->
@@ -277,6 +275,11 @@
                                 </div>
                             </div>
                             
+                        </div>
+
+                        <!-- CODDING: Botão voltar -->
+                        <div class="w-full grid grid-cols-2">
+                            <button id="formulario-de-pagamento-botao-voltar" class="col-span-1 w-full h-[50px] rounded-[5px] bg-white border-2 border-azul text-sm font-bold text-azul">VOLTAR</button>
                         </div>
                     </div>
                 </div>
@@ -355,25 +358,25 @@
                         </div>
                         
                         <!-- CODDING: Botões -->
-                        <div class="px-[32px] w-full flex flex-row justify-center items-center">
+                        <div id="formulario-de-pagamento-botoes-de-pagamento" class="px-[32px] pb-[32px] w-full flex flex-row justify-center items-center">
                             <button class="hidden w-full h-[50px] rounded-[5px] bg-azul text-sm font-bold text-white">CONTINUAR</button>
 
                             <!-- CODDING: Botão pix -->
-                            <button id="method-payment-button-pix" class="hidden border-2 border-red-900 w-full h-[50px] bg-azul text-sm font-black text-white flex flex-row justify-center items-center">
+                            <button id="formulario-de-pagamento-pix" class="hidden w-full h-[50px] bg-[#50B232] border-b-[5px] border-[#48A02E] rounded-[5px] shadow-[0_8px_24px_rgba(149,157,165,0.2)] text-sm font-black text-white flex flex-row justify-center items-center">
                                 <img src="/img/pages/purchase/payment/pix-white.svg" alt="" class="w-[25px] h-[25px] mr-[5px]">
                                 <span>GERAR PIX</span>
                             </button>
 
                             <!-- CODDING: Botão boleto -->
-                            <button id="method-payment-button-boleto" class="hidden border-2 border-red-900 w-full h-[50px] bg-azul text-sm font-black text-white flex flex-row justify-center items-center">
+                            <button id="formulario-de-pagamento-boleto" class="hidden w-full h-[50px] bg-[#50B232] border-b-[5px] border-[#48A02E] rounded-[5px] shadow-[0_8px_24px_rgba(149,157,165,0.2)] text-sm font-black text-white flex flex-row justify-center items-center ">
                                 <img src="/img/pages/purchase/payment/boleto-white.png" alt="" class="w-[25px] h-[25px] mr-[5px]">
                                 <span>GERAR BOLETO</span>
                             </button>
 
                             <!-- CODDING: Botão cartão de crédito -->
-                            <button id="method-payment-button-creditcard" class="hidden border-2 border-red-900 w-full h-[50px] bg-azul text-base font-normal text-white flex flex-row justify-center items-center">
+                            <button id="formulario-de-pagamento-creditcard" class="hidden w-full h-[50px] bg-[#50B232] border-b-[5px] border-[#48A02E] rounded-[5px] shadow-[0_8px_24px_rgba(149,157,165,0.2)] text-sm font-black text-white flex flex-row justify-center items-center">
                                 <img src="/img/pages/purchase/payment/creditcard-white.png" alt="" class="hidden w-[25px] h-[25px] mr-[5px]">
-                                <span>Comprar Agora</span>
+                                <span>COMPRAR AGORA</span>
                             </button>
                         </div>
                     

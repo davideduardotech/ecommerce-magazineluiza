@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title><%= typeof title !== 'undefined' ? title : 'Pedidos' %></title>
+
+        <%- include('../../../../partials/head/googlefonts.ejs') %> <!-- Google Fonts -->
+        <%- include('../../../../partials/head/fontawesome.ejs') %> <!-- Font Awesome -->
+        <%- include('../../../../partials/head/tailwindcss.ejs') %> <!-- Tailwind CSS -->
+
+    </head>
+    <body class="h-screen w-full border-2 border-red-900">
+        <div class="h-full w-full flex flex-row">
+            <!-- CODDING: Menu lateral -->
+            <div class="hidden h-full min-w-[250px] border-2 border-blue-900 md:flex flex-row justify-center items-center">
+                <dov>
+
+                </dov>
+            </div>
+
+            
+            <div class="h-full flex-grow border-2 border-blue-900 flex flex-col">
+                <!-- CODDING: Barra do topo -->
+                <div class="h-[70px] border-2 border-yellow-900 flex flex-row justify-center items-center"> 
+                    Barra do Topo
+                </div>
+
+                <!-- CODDING: Area de conteudo -->
+                <div class="h-[200px] border-red-900 flex flex-row justify-center items-center">
+                    <%= pedidos %>
+                </div>
+            </div>
+        </div>
+
+        <script src="/js/pages/ecommerce/pedidos/pedidos.js">
+            console.log('script de dentro do HTML');
+        </script>
+    </body>
+</html>
