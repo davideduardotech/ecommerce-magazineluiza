@@ -9,14 +9,130 @@
         <%- include('../../../../partials/head/fontawesome.ejs') %> <!-- Font Awesome -->
         <%- include('../../../../partials/head/tailwindcss.ejs') %> <!-- Tailwind CSS -->
 
+        <!-- CODDING: scrollbar personalizado -->
+        <link rel="stylesheet" href="/css/scrollbar.css">
+        <link rel="stylesheet" href="/css/pages/ecommerce/dashboard/pedidos.css">
     </head>
-    <body class="h-screen w-full border-2 border-red-900">
+    <body class="bg-[#F4F4F4] h-screen w-full border-2 border-red-900">
         <div class="h-full w-full flex flex-row">
             <!-- CODDING: Menu lateral -->
-            <div class="hidden h-full min-w-[250px] border-2 border-blue-900 md:flex flex-row justify-center items-center">
-                <dov>
+            <div id="menu-lateral-container" class="hidden h-full py-[32px] min-w-[300px] md:flex flex-col justify-between items-center bg-azul space-y-[10px]">
+               
+                
+                
 
-                </dov>
+                <!-- CODDING: Fechar --> 
+                <div id="menu-lateral-toggle" class="menu-item min-h-[40px] flex flex-row justify-center items-center text-white space-x-[10px] cursor-pointer hover:bg-[#1992ff] px-[8px]">
+                    <i class="fa-solid fa-bars text-xl min-w-[40px] min-h-[40px] flex flex-row justify-center items-center"></i> <span class="text-base min-w-[150px]">Fechar</span>
+                </div>
+              
+            
+                <div class="w-full h-[420px] py-[10px] flex flex-col overflow-y-auto space-y-[5px] overflow-x-hidden">
+                    <!-- ITEM FALSO -->
+                    <div class="flex flex-row justify-center items-center"> <!-- width: 100% do pai, filho inline-block(tamanho do conteúdo) -->
+                        <div class="menu-item bg-white flex flex-row justify-center items-center text-white cursor-pointer rounded-[10px] transition-transform duration-300 hover:scale-105">
+                            <div class=" px-[10px] py-[8px] bg-white rounded-[10px] flex flex-row justify-center items-center">
+                                <i class="fa-solid fa-house text-xl bg-azul rounded-[10px] min-w-[40px] min-h-[40px]  flex flex-row justify-center items-center shadow-[0_3px_8px_rgba(0,0,0,0.24)]"></i> 
+                            </div>
+                            <span class="text-base font-normal min-w-[150px] text-azul">Homepage</span>
+                        </div>
+                    </div>
+
+                    <!-- CODDING: Homepage --> 
+                    <div class="flex flex-row justify-center items-center">
+                        <div class="menu-item min-h-[40px] flex flex-row justify-center items-center text-white cursor-pointer hover:bg-[#1992ff] transition-transform duration-500 hover:scale-110">
+                            <div class="px-[10px]">
+                                <i class="fa-solid fa-house text-xl min-w-[40px] min-h-[40px] flex flex-row justify-center items-center"></i> 
+                            </div>
+                            <span class="text-base min-w-[150px]">Pagina Inicial</span>
+                        </div>
+                    </div>
+                
+                    
+                    <!-- CODDING: Pedido -->
+                    <div class="flex flex-row justify-center items-center">
+                        <div class="menu-item min-h-[40px] flex flex-row justify-center items-center text-white cursor-pointer hover:bg-[#1992ff] transition-transform duration-500 hover:scale-110">
+                            <div class="px-[10px]">
+                                <i class="fa-solid fa-truck-fast text-xl min-w-[40px] min-h-[40px] flex flex-row justify-center items-center"></i> 
+                            </div>
+                            <span class="text-base min-w-[150px]">Pedidos</span>
+                        </div>
+                    </div>
+                    <!-- CODDING: Produtos -->
+                    <div class="flex flex-row justify-center items-center">
+                        <div class="menu-item min-h-[40px] flex flex-row justify-center items-center text-white cursor-pointer hover:bg-[#1992ff] transition-transform duration-500 hover:scale-110">
+                            <div class="px-[10px]">
+                                <i class="fa-solid fa-boxes-stacked text-xl min-w-[40px] min-h-[40px] flex flex-row justify-center items-center"></i>
+                            </div> 
+                            <span class="text-base min-w-[150px]">Produtos</span>
+                        </div>
+                    </div>
+
+                    <!-- CODDING: Clientes -->
+                    <div class="flex flex-row justify-center items-center">
+                        <div class="menu-item min-h-[40px] flex flex-row justify-center items-center text-white cursor-pointer hover:bg-[#1992ff] transition-transform duration-500 hover:scale-110">
+                            <div class="px-[10px]">
+                                <i class="fa-solid fa-users text-xl min-w-[40px] min-h-[40px] flex flex-row justify-center items-center"></i>
+                            </div> 
+                            <span class="text-base min-w-[150px]">Clientes</span>
+                        </div>
+                    </div>
+                    <!-- CODDING: Promocoes -->
+                    <div class="flex flex-row justify-center items-center">
+                        <div class="menu-item min-h-[40px] flex flex-row justify-center items-center text-white cursor-pointer hover:bg-[#1992ff] transition-transform duration-500 hover:scale-110">
+                            <div class="px-[10px]">
+                                <i class="fa-solid fa-tags text-xl min-w-[40px] min-h-[40px] flex flex-row justify-center items-center"></i>
+                            </div> 
+                            <span class="text-base min-w-[150px]">Promoções</span>
+                        </div>
+                    </div>
+                   
+                    <!-- CODDING: Relatorio -->
+                    <div class="flex flex-row justify-center items-center">
+                        <div class="menu-item min-h-[40px] flex flex-row justify-center items-center text-white cursor-pointer hover:bg-[#1992ff] transition-transform duration-500 hover:scale-110">
+                            <div class="px-[10px]">
+                                <i class="fa-solid fa-chart-pie text-xl min-w-[40px] min-h-[40px] flex flex-row justify-center items-center"></i>
+                            </div> 
+                            <span class="text-base min-w-[150px]">Relatório</span>
+                        </div>
+                    </div>
+                   
+                    <!-- CODDING: Configuracoes -->
+                    <div class="flex flex-row justify-center items-center">
+                        <div class="menu-item min-h-[40px] flex flex-row justify-center items-center text-white cursor-pointer hover:bg-[#1992ff] transition-transform duration-500 hover:scale-110">
+                            <div class="px-[10px]">
+                                <i class="fa-solid fa-gear text-xl min-w-[40px] min-h-[40px] flex flex-row justify-center items-center"></i>
+                            </div> 
+                            <span class="text-base min-w-[150px]">Configurações</span>
+                        </div>
+                    </div>
+                 
+                    <!-- CODDING: Perfil --> 
+                    <div class="flex flex-row justify-center items-center">
+                        <div class="menu-item min-h-[40px] flex flex-row justify-center items-center text-white cursor-pointer hover:bg-[#1992ff] transition-transform duration-500 hover:scale-110">
+                            <div class="px-[10px]">
+                                <i class="fa-solid fa-user text-xl min-w-[40px] min-h-[40px] flex flex-row justify-center items-center"></i>
+                            </div> 
+                            <span class="text-base min-w-[150px]">Perfil</span>
+                        </div>
+                    </div>
+                    
+                    
+                    
+
+
+                    
+                </div>
+
+                <!-- CODDING: Sair --> 
+                <div id="menu-lateral-toggle" class="menu-item min-h-[40px] flex flex-row justify-center items-center text-white space-x-[10px] cursor-pointer hover:bg-[#1992ff] px-[8px]">
+                    <i class="fa-solid fa-arrow-right-from-bracket text-xl min-w-[40px] min-h-[40px] flex flex-row justify-center items-center"></i> <span class="text-base min-w-[150px]">Sair</span>
+                </div>
+
+
+             
+              
+
             </div>
 
             
@@ -27,13 +143,47 @@
                 </div>
 
                 <!-- CODDING: Area de conteudo -->
-                <div class="h-[200px] border-red-900 flex flex-row justify-center items-center">
-                    <%= pedidos %>
+                <div class="w-full flex flex-row justify-center items-center px-[32px] overflow-y-auto">
+         
+                    <div class=" w-full py-[32px] grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                        <!-- CODDING: Pedidos -->
+                        <div class="bg-white px-[16px] py-[16px] space-x-[15px] rounded-[10px]  shadow-[0_8px_24px_rgba(149,157,165,0.2)] flex flex-row justify-start items-center ">
+                            <div class="min-w-[50px] min-h-[50px] rounded-[10px] bg-azul text-white flex justify-center items-center shadow-[0_3px_8px_rgba(0,0,0,0.24)]">
+                                <i class="fa-solid fa-truck text-xl"></i>
+                            </div>
+                            <div class="flex flex-col justify-center items-">
+                                <p class="text-base/none text-bold text-gray-500">Pedidos</p>
+                                <p class="text-xl font-black text-gray-600">0</p>
+                            </div>
+                        </div>
+
+                        <!-- CODDING: Pedidos -->
+                        <div class="bg-white px-[16px] py-[16px] space-x-[15px] rounded-[10px]  shadow-[0_8px_24px_rgba(149,157,165,0.2)] flex flex-row justify-start items-center ">
+                            <div class="min-w-[50px] min-h-[50px] rounded-[10px] bg-azul text-white flex justify-center items-center shadow-[0_3px_8px_rgba(0,0,0,0.24)]">
+                                <i class="fa-solid fa-truck text-xl"></i>
+                            </div>
+                            <div class="flex flex-col justify-center items-">
+                                <p class="text-base/none text-bold text-gray-500">Pedidos</p>
+                                <p class="text-xl font-black text-gray-600">0</p>
+                            </div>
+                        </div>
+
+                        <!-- CODDING: Pedidos -->
+                        <div class="bg-white px-[16px] py-[16px] space-x-[15px] rounded-[10px]  shadow-[0_8px_24px_rgba(149,157,165,0.2)] flex flex-row justify-start items-center ">
+                            <div class="min-w-[50px] min-h-[50px] rounded-[10px] bg-azul text-white flex justify-center items-center shadow-[0_3px_8px_rgba(0,0,0,0.24)]">
+                                <i class="fa-solid fa-truck text-xl"></i>
+                            </div>
+                            <div class="flex flex-col justify-center items-">
+                                <p class="text-base/none text-bold text-gray-500">Pedidos</p>
+                                <p class="text-xl font-black text-gray-600">0</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <script src="/js/pages/ecommerce/pedidos/pedidos.js">
+        <script src="/js/pages/ecommerce/dashboard/pedidos/pedidos.js">
             console.log('script de dentro do HTML');
         </script>
     </body>

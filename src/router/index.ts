@@ -7,7 +7,7 @@ const appRouter = express.Router();
 
 appRouter.use('/api', apiRouter);
 appRouter.use('/ecommerce',ecommerceRouter);
-appRouter.use('/dashboard',dashboardRouter);
+appRouter.use('/ecommerce/dashboard',dashboardRouter);
 
 
 export default appRouter;
